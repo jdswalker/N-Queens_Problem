@@ -2,10 +2,22 @@
 // Author: James Walker
 // Copyrighted 2017 under the MIT license:
 //   http://www.opensource.org/licenses/mit-license.php
-// Compilation: gcc eight_queens_solver.c -o eight_queens_solver
 //
-// Based off the algorithm provided at the bottom of this webpage:
-//   https://www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD316.9.html
+// Purpose: 
+//   The 8-Queens Solver finds solutions for the 8-Queens problem. That
+//   is, how many ways are there to place 8 chess queens on an regular 8 x 8
+//   chess board such that none of the queens can attack each other.
+// Compilation, Execution and Partial Output:
+//   $ gcc eight_queens_solver.c -o eight_queens_solver
+//   $ ./eight_queens_solver.exe
+//   1 5 8 6 3 7 2 4
+//   1 6 8 3 7 4 2 5
+//   ...
+//   8 3 1 6 2 5 7 4
+//   8 4 1 3 6 2 7 5
+//
+// This implementation is based off the algorithm provided at the bottom of this
+// webpage: www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD316.9.html
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,7 +42,7 @@ void place_next_queen(int queens[8], int row_index, int column[8],
       if (row_index == 8) {
         // Chess board is full
         for (int row = 0; row < 8; ++row) {
-          printf("%d ", queens[row]);
+          printf("%d ", queens[row] + 1);
         }
         printf("\n");
       } else {
