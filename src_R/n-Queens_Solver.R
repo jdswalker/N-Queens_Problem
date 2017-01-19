@@ -2,82 +2,94 @@
 ## Author: James Walker
 ## Copyrighted 2017 under the MIT license:
 ##   http://www.opensource.org/licenses/mit-license.php
-##
-## Based off the algorithm provided at the bottom of this webpage:
-##   https://www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD316.9.html
+## 
+## Purpose: The n-Queens Solver finds solutions for the n-Queens problem. That
+##   is, how many ways are there to place n chess queens on an n x n chess board
+##   such that none of the queens can attack each other.
+## Example Usage:
+##   > # Outputting solutions to the 4-queens problem standard out:  
+##   > SolveNQueens(4)  
+##   The solver found 2 solutions for the 4-Queens problem  
+##   Solution 1:     2 4 1 3  
+##   Solution 2:     3 1 4 2  
+##   > # Saving solutions to the 4-queens problem in a plain-text file:  
+##   > SolveNQueens(4, 'FourQueensSolutions.txt')
+## 
+## This implementation is based off the algorithm provided at the bottom of this
+## webpage: www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD316.9.html
 
-# Initializes starting values for the chess board
-initialize_board <- function(n_queens) {
-  chess_board <- vector("list", 0)
-  chess_board$queens <- vector(mode = "integer", length = n_queens)
-  chess_board$row_index <- 0
-  chess_board$column <- rep(TRUE, n_queens) 
-  chess_board$diagonal_up <- rep(TRUE, 2 * n_queens - 1)
-  chess_board$diagonal_down <- rep(TRUE, 2 * n_queens - 1)
+# Initializes starting values for the n x n chess board
+InitializeBoard <- function(n.queens) {
+  chess.board <- vector("list", 0)
+  chess.board$queens <- vector(mode = "integer", length = n.queens)
+  chess.board$row.index <- 0
+  chess.board$column <- rep(TRUE, n.queens) 
+  chess.board$diagonal.up <- rep(TRUE, 2 * n.queens - 1)
+  chess.board$diagonal.down <- rep(TRUE, 2 * n.queens - 1)
 
-  return(chess_board)
+  return(chess.board)
 }
 
 # Check if a queen can be placed on the current square
-square_is_free <- function(chess_board, n_queens, col_index) {
+SquareIsFree <- function(chess.board, n.queens, col.index) {
 
-  return(chess_board$column[col_index + 1] &
-         chess_board$diagonal_up[n_queens + chess_board$row_index - col_index] &
-         chess_board$diagonal_down[chess_board$row_index + col_index + 1])
+  return(chess.board$column[col.index + 1] &
+         chess.board$diagonal.up[n.queens + chess.board$row.index - col.index] &
+         chess.board$diagonal.down[chess.board$row.index + col.index + 1])
 }
 
-
-set_queen <- function(chess_board, n_queens, col_index) {
+# Places a queen on the n x n chess board in the given column
+SetQueen <- function(chess.board, n.queens, col.index) {
   
-  chess_board$queens[chess_board$row_index + 1] <- col_index + 1
-  chess_board$column[col_index + 1] <- FALSE
-  chess_board$diagonal_up[n_queens + chess_board$row_index - col_index] <- FALSE
-  chess_board$diagonal_down[chess_board$row_index + col_index + 1] <- FALSE
-  chess_board$row_index <- chess_board$row_index + 1
+  chess.board$queens[chess.board$row.index + 1] <- col.index + 1
+  chess.board$column[col.index + 1] <- FALSE
+  chess.board$diagonal.up[n.queens + chess.board$row.index - col.index] <- FALSE
+  chess.board$diagonal.down[chess.board$row.index + col.index + 1] <- FALSE
+  chess.board$row.index <- chess.board$row.index + 1
 
-  return(chess_board)
+  return(chess.board)
 }
 
 # Removes a queen from the n x n chess board in the given column to backtrack
-remove_queen <- function(chess_board, n_queens, col_index) {
+RemoveQueen <- function(chess.board, n.queens, col.index) {
   
-  chess_board$row_index <- chess_board$row_index - 1
-  chess_board$column[col_index + 1] <- TRUE
-  chess_board$diagonal_up[n_queens + chess_board$row_index - col_index] <- TRUE
-  chess_board$diagonal_down[chess_board$row_index + col_index + 1] <- TRUE
+  chess.board$row.index <- chess.board$row.index - 1
+  chess.board$column[col.index + 1] <- TRUE
+  chess.board$diagonal.up[n.queens + chess.board$row.index - col.index] <- TRUE
+  chess.board$diagonal.down[chess.board$row.index + col.index + 1] <- TRUE
   
-  return(chess_board)
+  return(chess.board)
 }
 
 # Recursive function for finding valid queen placements on the chess board
-place_next_queen <- function(chess_board, n_queens, scope) {
+PlaceNextQueen <- function(chess.board, n.queens, scope) {
 
-  for (col_index in 0:(n_queens-1)) {
-    if (square_is_free(chess_board, n_queens, col_index)) {
-      chess_board <- set_queen(chess_board, n_queens, col_index)
+  for (col.index in 0:(n.queens-1)) {
+    if (SquareIsFree(chess.board, n.queens, col.index)) {
+      chess.board <- SetQueen(chess.board, n.queens, col.index)
       
-      if (chess_board$row_index == n_queens) {
-        solved_list <- get('solutions', envir = scope)
-        solved_list[length(solved_list) + 1] <- paste(chess_board$queens,
+      if (chess.board$row.index == n.queens) {
+        solved.list <- get('solutions', envir = scope)
+        solved.list[length(solved.list) + 1] <- paste(chess.board$queens,
                                                       collapse = " ", sep = "")
-        assign('solutions', solved_list, envir = scope)
+        assign('solutions', solved.list, envir = scope)
       } else {
-        place_next_queen(chess_board, n_queens, scope)
-        chess_board <- remove_queen(chess_board, n_queens, col_index)
+        PlaceNextQueen(chess.board, n.queens, scope)
+        chess.board <- RemoveQueen(chess.board, n.queens, col.index)
       }
     }
   }
 }
 
 # Formats the output of the solutions
-output_solutions <- function(solutions, n_queens, filename) {
+OutputSolutions <- function(solutions, n.queens, filename) {
 
-  if(length(solutions) == 0) {
-    cat(paste("No solutions were found for the ", n_queens, "-Queens problem\n",
-              collapse = "", sep = ""))
+  if (length(solutions) == 0) {
+    cat(paste("No solutions were found for the ", n.queens,
+              "-Queens problem:\n", collapse = "", sep = ""))
   } else {
     cat(paste("The solver found ", length(solutions), " solutions for the ",
-              n_queens, "-Queens problem\n", collapse = "", sep = ""),
+              n.queens, "-Queens problem\n", collapse = "", sep = ""),
         file = filename, append = FALSE)
     solutions <- paste("Solution ", seq(1, length(solutions)), ":\t", solutions,
                        collapse = NULL, sep = "")
@@ -86,11 +98,11 @@ output_solutions <- function(solutions, n_queens, filename) {
 }
 
 # Starting point for the n-Queens solver
-solve_n_queens <- function(n_queens, filename = "") {
-  if(n_queens > 0) {
+SolveNQueens <- function(n.queens, filename = "") {
+  if (n.queens > 0) {
     solver.env <- new.env()
     solver.env$solutions <- character(0)
-    place_next_queen(initialize_board(n_queens), n_queens, solver.env)
-    output_solutions(solver.env$solutions, n_queens, filename)
+    PlaceNextQueen(InitializeBoard(n.queens), n.queens, solver.env)
+    OutputSolutions(solver.env$solutions, n.queens, filename)
   }
 }
