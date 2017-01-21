@@ -40,7 +40,7 @@ The _n_-Queens Counter program has been used to find the number of queen placeme
 |  15 | 1.190 × 10<sup>35</sup> | 171,129,071 |  2,279,184 |  
 |  16 | 2.109 × 10<sup>38</sup> |         ??? | 14,772,512 |  
 
-According to the [On-Line Encyclopedia of Integer Sequences] (OEIS sequence: [A000170]), the total number of solutions for the _n_-queens problem have been determined every value of _n_ up to 27.  
+According to the [On-Line Encyclopedia of Integer Sequences] \(OEIS sequence: [A000170]), the total number of solutions for the _n_-queens problem have been determined every value of _n_ up to 27.  
 
 ### Constrained DFS Algorithm Details  
 The algorithm implemented to solve the 8-queens problem was obtained online from the bottom of the webpage for [A Short Introduction to the Art of Programming] by [Dr. Edsger W. Dijkstra]. The 8-queens solver algorithm, shown below, has been adapted and reformatted from the one provided in the link above.  
