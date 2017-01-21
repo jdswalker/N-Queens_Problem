@@ -1,9 +1,9 @@
 # _n_-Queens Problem  
 Author: James Walker  
-©2017 under the [MIT license](www.opensource.org/licenses/mit-license.php)  
+©2017 under the [MIT license]  
 
 ## Overview  
-The _n_-queens problem is a generalization of the [8-queens puzzle](wikipedia.org/wiki/Eight_queens_puzzle) involving how to place eight non-attacking queens on a regular [chess board](wikipedia.org/wiki/Chessboard). The _n_-queens problem asks, given a positive integer _n_,  how many ways are there to place _n_ chess queens on an _n_ × _n_ chess board such that none of the queens can attack each other.  
+The _n_-queens problem is a generalization of the [8-queens puzzle] involving how to place eight non-attacking queens on a regular [chess board]. The _n_-queens problem asks, given a positive integer _n_,  how many ways are there to place _n_ chess queens on an _n_ × _n_ chess board such that none of the queens can attack each other.  
 
 The programs in this repository implement a constrained depth-first search (DFS) algorithm to find solutions to the _n_-queens problem. The programs are outlined below, with further descriptions about their execution provided in their respective folders. Following this, general results are presented and explained. Lastly, an outline of the constrained DFS algorithm is provided along with a source link.  
 
@@ -22,28 +22,28 @@ Results from the solver program are output as a series of _n_ integers correspon
 The _n_-Queens Counter program has been used to find the number of queen placements and the number of _n_-queens solutions for values of _n_ between 1 and 15, with results summarized below. Due to execution time, higher values of _n_ have not been attempted. That said, the results show that the constrained DFS algorithm significantly reduces the search-space of the problem compared to the _n_!/(_n_ − 1)! placements that would be made by most naïve combinatorial algorithm.  
 
 | <div><em>n</em></div> | <div>Number of Queens</div><div>Placed (<em>Naïve</em>)</div> | <div>Number of Queens</div><div>Placed (<em>Constrained</em>)</div> | <div>Number of</div><div>Solutions</div> |  
-|:--:|------------------------:|------------:|-----------:|  
-|  1 |                       1 |           1 |          1 |  
-|  2 |                      12 |           2 |          0 |  
-|  3 |                     504 |           5 |          0 |  
-|  4 |                  43,680 |          16 |          2 |  
-|  5 |               6,375,600 |          53 |         10 |  
-|  6 |  1.402 × 10<sup>9</sup> |         152 |          4 |  
-|  7 | 4.329 × 10<sup>11</sup> |         551 |         40 |  
-|  8 | 1.785 × 10<sup>14</sup> |       2,056 |         92 |  
-|  9 | 9.467 × 10<sup>16</sup> |       8,393 |        352 |  
-| 10 | 6.282 × 10<sup>19</sup> |      35,538 |        724 |  
-| 11 | 5.096 × 10<sup>22</sup> |     166,925 |      2,680 |  
-| 12 | 4.963 × 10<sup>25</sup> |     856,188 |     14,200 |  
-| 13 | 5.714 × 10<sup>28</sup> |   4,674,889 |     73,712 |  
-| 14 | 7.676 × 10<sup>31</sup> |  27,358,552 |    365,596 |  
-| 15 | 1.190 × 10<sup>35</sup> | 171,129,071 |  2,279,184 |  
-| 16 | 2.109 × 10<sup>38</sup> |         ??? | 14,772,512 |  
+|:---:|------------------------:|------------:|-----------:|  
+|   1 |                       1 |           1 |          1 |  
+|   2 |                      12 |           2 |          0 |  
+|   3 |                     504 |           5 |          0 |  
+|   4 |                  43,680 |          16 |          2 |  
+|   5 |               6,375,600 |          53 |         10 |  
+|   6 |  1.402 × 10<sup>9</sup> |         152 |          4 |  
+|   7 | 4.329 × 10<sup>11</sup> |         551 |         40 |  
+|   8 | 1.785 × 10<sup>14</sup> |       2,056 |         92 |  
+|   9 | 9.467 × 10<sup>16</sup> |       8,393 |        352 |  
+|  10 | 6.282 × 10<sup>19</sup> |      35,538 |        724 |  
+|  11 | 5.096 × 10<sup>22</sup> |     166,925 |      2,680 |  
+|  12 | 4.963 × 10<sup>25</sup> |     856,188 |     14,200 |  
+|  13 | 5.714 × 10<sup>28</sup> |   4,674,889 |     73,712 |  
+|  14 | 7.676 × 10<sup>31</sup> |  27,358,552 |    365,596 |  
+|  15 | 1.190 × 10<sup>35</sup> | 171,129,071 |  2,279,184 |  
+|  16 | 2.109 × 10<sup>38</sup> |         ??? | 14,772,512 |  
 
-According to the [On-Line Encyclopedia of Integer Sequences](oeis.org) (OEIS sequence: [A000170](oeis.org/A000170)), the total number of solutions for the _n_-queens problem have been determined every value of _n_ up to 27.  
+According to the [On-Line Encyclopedia of Integer Sequences] (OEIS sequence: [A000170]), the total number of solutions for the _n_-queens problem have been determined every value of _n_ up to 27.  
 
 ### Constrained DFS Algorithm Details  
-The algorithm implemented to solve the 8-queens problem was obtained online from the bottom of the webpage for [A Short Introduction to the Art of Programming](www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD316.9.html) by [Dr. Edsger W. Dijkstra](https://en.wikipedia.org/wiki/Edsger_W._Dijkstra). The 8-queens solver algorithm, shown below, has been adapted and reformatted from the one provided in the link above.  
+The algorithm implemented to solve the 8-queens problem was obtained online from the bottom of the webpage for [A Short Introduction to the Art of Programming] by [Dr. Edsger W. Dijkstra]. The 8-queens solver algorithm, shown below, has been adapted and reformatted from the one provided in the link above.  
 
 <pre>begin ALGORITHM  
   integer n  
@@ -102,3 +102,11 @@ The algorithm implemented to solve the 8-queens problem was obtained online from
   end INITIALIZE EMPTY BOARD
   PLACE NEXT QUEEN  
 end ALGORITHM</pre>   
+
+[MIT license]: http://www.opensource.org/licenses/mit-license.php  
+[8-queens puzzle]: http://wikipedia.org/wiki/Eight_queens_puzzle  
+[chess board]: http://wikipedia.org/wiki/Chessboard  
+[On-Line Encyclopedia of Integer Sequences]: http://oeis.org  
+[A000170]: http://oeis.org/A000170  
+[A Short Introduction to the Art of Programming]: http://www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD316.9.html  
+[Dr. Edsger W. Dijkstra]: http://wikipedia.org/wiki/Edsger_W._Dijkstra  
