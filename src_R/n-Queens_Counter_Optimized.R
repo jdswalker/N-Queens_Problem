@@ -10,13 +10,13 @@
 ##   during the program's execution. Unlike the original n-Queens Counter
 ##   program, the optimized version was written to increase execution
 ##   efficiency, not for code readability. Changes to the code structure and
-##   syntax from the original implementation increased the execution speed by
-##   approximately 60% to 70%. The bytecode compiler and optimization increased
-##   the execution speed by an additional 330% to 350%. Thus, the optimized
-##   counter program runs 7 to 8 times faster. 
+##   syntax from the original implementation decreases the execution time by
+##   approximately 100%. The optimization via the bytecode compiler decreases
+##   the execution time of the optimized code by an additional 300%. Thus, the
+##   optimized counter program runs approximately 8 times faster. 
 ## Example Usage:
 ##   > setwd('C:/Users/SomeUser/Desktop')
-##   > source('n-Queens_Solver.R')
+##   > source('n-Queens_Counter_Optimized.R')
 ##   > # Outputting solutions and placements for three n-queens problems:  
 ##   > for (n in 5:7) {
 ##   +   writeLines(CountNQueens(n))
@@ -35,32 +35,32 @@ library('compiler')
 enableJIT(3)
 
 # Recursive function for finding valid queen placements on the chess board
-PlaceNextQueen <- function(chess.board, n.queens, scope) {
+PlaceNextQueen <- function(queens, row.index, moves, solver, n.queens) {
   for (col.index in 1:n.queens) {
     # Check if a queen can be placed on the current square
-    if (chess.board[[3]][col.index] &
-        chess.board[[4]][n.queens + chess.board[[2]] + 1 - col.index] &
-        chess.board[[5]][chess.board[[2]] + col.index]) {
+    if (moves[col.index] &
+        moves[n.queens+n.queens+row.index+1-col.index] &
+        moves[n.queens+n.queens+n.queens+row.index+col.index-1]) {
       # Places a queen on the n x n chess board in the given column
-      chess.board[[3]][col.index] <- FALSE
-      chess.board[[5]][chess.board[[2]] + col.index] <- FALSE
-      chess.board[[2]] <- chess.board[[2]] + 1
-      chess.board[[4]][n.queens + chess.board[[2]] - col.index] <- FALSE
-      chess.board[[1]][chess.board[[2]]] <- col.index
+      row.index <- row.index+1
+      queens[row.index] <- col.index
+      moves[col.index] <- FALSE
+      moves[n.queens+n.queens+row.index-col.index] <- FALSE
+      moves[n.queens+n.queens+n.queens+row.index+col.index-2] <- FALSE
       # Increments each time a queen is placed
-      assign('placements', get('placements', envir = scope) + 1, envir = scope)
-      if (chess.board[[2]] == n.queens) {
+      assign('placements', get('placements', envir = solver)+1, envir = solver)
+      if (row.index == n.queens) {
         # Increments each time a solution is found
-        assign('solutions', get('solutions', envir = scope) + 1, envir = scope)
+        assign('solutions', get('solutions', envir = solver)+1, envir = solver)
       } else {
         # Recursive call to find next queen placement on the chess board
-        PlaceNextQueen(chess.board, n.queens, scope)
+        PlaceNextQueen(queens, row.index, moves, solver, n.queens)
         # Removes a queen from the n x n chess board in the given column to
         # backtrack
-        chess.board[[3]][col.index] <- TRUE
-        chess.board[[4]][n.queens + chess.board[[2]] - col.index] <- TRUE
-        chess.board[[2]] <- chess.board[[2]] - 1
-        chess.board[[5]][chess.board[[2]] + col.index] <- TRUE
+        moves[col.index] <- TRUE
+        moves[n.queens+n.queens+row.index-col.index] <- TRUE
+        moves[n.queens+n.queens+n.queens+row.index+col.index-2] <- TRUE
+        row.index <- row.index-1
       }
     }
   }
@@ -69,21 +69,18 @@ PlaceNextQueen <- function(chess.board, n.queens, scope) {
 # Starting point for the optimized n-Queens counter
 CountNQueens <- function(n.queens) {
   if(n.queens > 0) {
-    solver.env <- new.env()  # Defines scope to access placements and solutions
+    # Initializes the n x n chess board
+    queens <- vector(mode = "integer", length = n.queens)
+    row.index <- 0
+    moves <- rep(TRUE, 5*n.queens-2)
+    solver.env <- new.env()  # Defines solver to access placements and solutions
     solver.env$placements <- 0  # Total queens placed during execution
     solver.env$solutions <- 0  # Total number of solutions found
-    # Initializes the n x n chess board
-    chess.board <- vector("list", 5)
-    chess.board[[1]] <- vector(mode = "integer", length = n.queens) # queens
-    chess.board[[2]] <- 0 # row index
-    chess.board[[3]] <- rep(TRUE, n.queens)  # free column positions
-    chess.board[[4]] <- rep(TRUE, 2 * n.queens - 1)  # free upward diagonals
-    chess.board[[5]] <- rep(TRUE, 2 * n.queens - 1)  # free downward diagonals
     # Begin counting n-queens placements and solutions
-    PlaceNextQueen(chess.board, n.queens, solver.env)
+    PlaceNextQueen(queens, row.index, moves, solver.env, n.queens)
     # Returns a string with the counted results
     return(paste("The ", n.queens, "-Queens problem required ", 
                  solver.env$placements, " queen placements to find all ",
-                 solver.env$solutions, " solutions", collapse = "", sep = ""), sep = "\n")
+                 solver.env$solutions, " solutions", collapse = "", sep = ""))
   }
 }

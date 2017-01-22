@@ -9,7 +9,7 @@ Similar to the 8-queens solver in the `src_C` folder, each solution will consist
 
 <img src="./../img/8-Queens_Example.png" title="One Solution to the 8-Queens Problem" alt="8-Queens Solution Example" height="413" width="413"/>  
 
-The _n_-Queens Counter uses the same generalized algorithm as the solver, but it does not store or output solutions. Instead, the counter program merely tracks the total number of valid solutions during execution of the algorithm. Additionally, the number of times a queen is placed on the board is also tracked by the program to provide an indication of the algorithm's efficiency. When the program finishes executing, both of these numbers are output. The optimized _n_-Queens Counter program functions identically, but executes between 7 and 8 times faster than the original program.  
+The _n_-Queens Counter uses the same generalized algorithm as the solver, but it does not store or output solutions. Instead, the counter program merely tracks the total number of valid solutions during execution of the algorithm. Additionally, the number of times a queen is placed on the board is also tracked by the program to provide an indication of the algorithm's efficiency. When the program finishes executing, both of these numbers are output. The optimized _n_-Queens Counter program functions identically, but executes approximately 8 times faster than the original program.  
 
 **Required Tools:**  
 - [R version 3.0] or equivalent  
