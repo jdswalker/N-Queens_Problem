@@ -19,7 +19,7 @@ Results from the solver program are output as a series of _n_ integers correspon
 <img src="./img/8-Queens_Example.png" title="One Solution to the 8-Queens Problem" alt="8-Queens Solution Example" height="413" width="413"/>   
   
 ### Number Solutions for _n_-Queens Problems  
-The _n_-Queens Counter program has been used to find the number of queen placements and the number of _n_-queens solutions for values of _n_ between 1 and 15, with results summarized below. Due to execution time, higher values of _n_ have not been attempted. That said, the results show that the constrained DFS algorithm significantly reduces the search-space of the problem compared to the _n_!/(_n_ − 1)! placements that would be made by most naïve combinatorial algorithm.  
+The _n_-Queens Counter program has been used to find the number of queen placements and the number of _n_-queens solutions for values of _n_ between 1 and 15, with results summarized below. Due to execution time, higher values of _n_ have not been attempted. That said, the results show that the constrained DFS algorithm significantly reduces the search-space of the problem compared to the (<em>n</em><sup>2</sup>)!/(<em>n</em><sup>2</sup> − <em>n</em>)! placements that would be made by most naïve combinatorial algorithm.  
 
 | <div><em>n</em></div> | <div>Number of Queens</div><div>Placed (<em>Naïve</em>)</div> | <div>Number of Queens</div><div>Placed (<em>Constrained</em>)</div> | <div>Number of</div><div>Solutions</div> |  
 |:---:|------------------------:|------------:|-----------:|  
@@ -40,7 +40,7 @@ The _n_-Queens Counter program has been used to find the number of queen placeme
 |  15 | 1.190 × 10<sup>35</sup> | 171,129,071 |  2,279,184 |  
 |  16 | 2.109 × 10<sup>38</sup> |         ??? | 14,772,512 |  
 
-According to the [On-Line Encyclopedia of Integer Sequences] \(OEIS sequence: [A000170]), the total number of solutions for the _n_-queens problem have been determined every value of _n_ up to 27.  
+According to the [On-Line Encyclopedia of Integer Sequences] \(OEIS sequence: [A000170]), the total number of solutions for the _n_-queens problem has been determined every value of _n_ up to 27.  
 
 ### Constrained DFS Algorithm Details  
 The algorithm implemented to solve the 8-queens problem was obtained online from the bottom of the webpage for [A Short Introduction to the Art of Programming] by [Dr. Edsger W. Dijkstra]. The 8-queens solver algorithm, shown below, has been adapted and reformatted from the one provided in the link above.  
