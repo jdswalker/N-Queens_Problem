@@ -23,23 +23,22 @@
 #include <stdlib.h>
 
 // Recursive function for finding valid queen placements on the chess board
-void place_next_queen(int queens[8], int row_index, int column[8],
+void place_next_queen(int queens[8], int col_index, int column[8],
                       int diagonal_up[15], int diagonal_down[15]) {
-  
-  for (int col_index = 0; col_index < 8; ++col_index) {
-    
+  for (int row_index = 0; row_index < 8; ++row_index) {
     // Check if a queen can be placed on the current square
-    if (column[col_index] && diagonal_up[7 + row_index - col_index] &&
-        diagonal_down[row_index + col_index]) {
+    if (column[row_index] &
+        diagonal_up[7 + col_index - row_index] &
+        diagonal_down[col_index + row_index]) {
 
       // Place a queen on the chess board
-      queens[row_index] = col_index;
-      column[col_index] = 0;
-      diagonal_up[7 + row_index - col_index] = 0;
-      diagonal_down[row_index + col_index] = 0;
-      ++row_index;
+      queens[col_index] = row_index;
+      column[row_index] = 0;
+      diagonal_up[7 + col_index - row_index] = 0;
+      diagonal_down[col_index + row_index] = 0;
+      ++col_index;
 
-      if (row_index == 8) {
+      if (col_index == 8) {
         // Chess board is full
         for (int row = 0; row < 8; ++row) {
           printf("%d ", queens[row] + 1);
@@ -47,22 +46,21 @@ void place_next_queen(int queens[8], int row_index, int column[8],
         printf("\n");
       } else {
         // Recursive call to find next queen placement on the chess board
-        place_next_queen(queens, row_index, column, diagonal_up, diagonal_down);
+        place_next_queen(queens, col_index, column, diagonal_up, diagonal_down);
+        // Removes a queen from the chess board in the given column to backtrack
       }
-
-      // Removes a queen from the chess board in the given column to backtrack
-      --row_index;
-      diagonal_down[row_index + col_index] = 1;
-      diagonal_up[7 + row_index - col_index] = 1;
-      column[col_index] = 1;
+      --col_index;
+      diagonal_down[col_index + row_index] = 1;
+      diagonal_up[7 + col_index - row_index] = 1;
+      column[row_index] = 1;
     }
-  }
+  
 }
 
 int main() {
   // Parameters for solver
   int queens[8] = {0};
-  int row_index = 0;
+  int col_index = 0;
   int column[8];
   int diagonal_up[15];
   int diagonal_down[15];
@@ -80,7 +78,7 @@ int main() {
   }
 
   // Start solver algorithm
-  place_next_queen(queens, row_index, column, diagonal_up, diagonal_down);
+  place_next_queen(queens, col_index, column, diagonal_up, diagonal_down);
 
   return 0;
 }
