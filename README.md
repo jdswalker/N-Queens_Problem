@@ -76,13 +76,13 @@ The algorithm implemented to solve the 8-queens problem was obtained online from
           end PRINT QUEEN POSITIONS  
         else BOARD NOT FULL:  
           PLACE NEXT QUEEN  
-          begin REMOVE QUEEN FROM SQUARE H:  
-            n := n - 1  
-            down[n+h] := true  
-            up[n-h] := true  
-            col[h] := true  
-          end REMOVE QUEEN FROM SQUARE H  
         end if BOARD FULL  
+        begin REMOVE QUEEN FROM SQUARE H:  
+          n := n - 1  
+          down[n+h] := true  
+          up[n-h] := true  
+          col[h] := true  
+        end REMOVE QUEEN FROM SQUARE H  
       end if SQUARE H FREE  
       h := h + 1  
     end repeat  
