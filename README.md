@@ -9,6 +9,7 @@ The programs in this repository implement a constrained depth-first search (DFS)
 
 **C Programs in the** `src_C` **folder**:  
 - 8-Queens Solver (`eight_queens_solver.c`)  
+- _n_-Queens Solver (`n_queens_solver.c`)  
 
 **R Programs in the** `src_R` **folder**:  
 - _n_-Queens Solver (`n-Queens_Solver.R`)  
