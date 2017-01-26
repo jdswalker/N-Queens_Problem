@@ -24,7 +24,7 @@
 InitializeBoard <- function(n.queens) {
   chess.board <- vector("list", 0)
   chess.board$queens <- vector(mode = "integer", length = n.queens)
-  chess.board$row.index <- 0
+  chess.board$col.j <- 0
   chess.board$column <- rep(TRUE, n.queens)
   chess.board$diagonal.up <- rep(TRUE, 2 * n.queens - 1)
   chess.board$diagonal.down <- rep(TRUE, 2 * n.queens - 1)
@@ -32,45 +32,45 @@ InitializeBoard <- function(n.queens) {
 }
 
 # Check if a queen can be placed on the current square
-SquareIsFree <- function(chess.board, n.queens, col.index) {
-  return(chess.board$column[col.index + 1] &
-         chess.board$diagonal.up[n.queens + chess.board$row.index - col.index] &
-         chess.board$diagonal.down[chess.board$row.index + col.index + 1])
+SquareIsFree <- function(chess.board, n.queens, row.i) {
+  return(chess.board$column[row.i + 1] &
+         chess.board$diagonal.up[n.queens + chess.board$col.j - row.i] &
+         chess.board$diagonal.down[chess.board$col.j + row.i + 1])
 }
 
 # Places a queen on the n x n chess board in the given column
-SetQueen <- function(chess.board, n.queens, col.index) {
-  chess.board$queens[chess.board$row.index + 1] <- col.index + 1
-  chess.board$column[col.index + 1] <- FALSE
-  chess.board$diagonal.up[n.queens + chess.board$row.index - col.index] <- FALSE
-  chess.board$diagonal.down[chess.board$row.index + col.index + 1] <- FALSE
-  chess.board$row.index <- chess.board$row.index + 1
+SetQueen <- function(chess.board, n.queens, row.i) {
+  chess.board$queens[chess.board$col.j + 1] <- row.i + 1
+  chess.board$column[row.i + 1] <- FALSE
+  chess.board$diagonal.up[n.queens + chess.board$col.j - row.i] <- FALSE
+  chess.board$diagonal.down[chess.board$col.j + row.i + 1] <- FALSE
+  chess.board$col.j <- chess.board$col.j + 1
   return(chess.board)
 }
 
 # Removes a queen from the n x n chess board in the given column to backtrack
-RemoveQueen <- function(chess.board, n.queens, col.index) {
-  chess.board$row.index <- chess.board$row.index - 1
-  chess.board$column[col.index + 1] <- TRUE
-  chess.board$diagonal.up[n.queens + chess.board$row.index - col.index] <- TRUE
-  chess.board$diagonal.down[chess.board$row.index + col.index + 1] <- TRUE
+RemoveQueen <- function(chess.board, n.queens, row.i) {
+  chess.board$col.j <- chess.board$col.j - 1
+  chess.board$column[row.i + 1] <- TRUE
+  chess.board$diagonal.up[n.queens + chess.board$col.j - row.i] <- TRUE
+  chess.board$diagonal.down[chess.board$col.j + row.i + 1] <- TRUE
   return(chess.board)
 }
 
 # Recursive function for finding valid queen placements on the chess board
 PlaceNextQueen <- function(chess.board, n.queens, scope) {
-  for (col.index in 0:(n.queens-1)) {
-    if (SquareIsFree(chess.board, n.queens, col.index)) {
-      chess.board <- SetQueen(chess.board, n.queens, col.index)
-      if (chess.board$row.index == n.queens) {
+  for (row.i in 0:(n.queens-1)) {
+    if (SquareIsFree(chess.board, n.queens, row.i)) {
+      chess.board <- SetQueen(chess.board, n.queens, row.i)
+      if (chess.board$col.j == n.queens) {
         solved.list <- get('solutions', envir = scope)
         solved.list[length(solved.list) + 1] <- paste(chess.board$queens,
                                                       collapse = " ", sep = "")
         assign('solutions', solved.list, envir = scope)
       } else {
         PlaceNextQueen(chess.board, n.queens, scope)
-        chess.board <- RemoveQueen(chess.board, n.queens, col.index)
       }
+      chess.board <- RemoveQueen(chess.board, n.queens, row.i)
     }
   }
 }
