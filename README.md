@@ -10,6 +10,7 @@ The programs in this repository implement a constrained depth-first search (DFS)
 **C Programs in the** `src_C` **folder**:  
 - 8-Queens Solver (`eight_queens_solver.c`)  
 - _n_-Queens Solver (`n_queens_solver.c`)  
+- _n_-Queens Counter (`n_queens_counter.c`)  
 
 **R Programs in the** `src_R` **folder**:  
 - _n_-Queens Solver (`n-Queens_Solver.R`)  
@@ -20,26 +21,30 @@ Results from the solver program are output as a series of _n_ integers correspon
 <img src="./img/8-Queens_Example.png" title="One Solution to the 8-Queens Problem" alt="8-Queens Solution Example" height="413" width="413"/>   
   
 ### Number Solutions for _n_-Queens Problems  
-The _n_-Queens Counter program has been used to find the number of queen placements and the number of _n_-queens solutions for values of _n_ between 1 and 15, with results summarized below. Due to execution time, higher values of _n_ have not been attempted. That said, the results show that the constrained DFS algorithm significantly reduces the search-space of the problem compared to the (<em>n</em><sup>2</sup>)!/(<em>n</em><sup>2</sup> − <em>n</em>)! placements that would be made by most naïve combinatorial algorithm.  
+The _n_-Queens Counter programs have been used to find the number of queen placements and the number of _n_-queens solutions for values of _n_ between 1 and 15 with the R implementations, and values of _n_ between 1 and 18 with the C implementation. As can be seen from the results below, the constrained DFS algorithm significantly reduces the search-space of the problem compared to the (<em>n</em><sup>2</sup>)!/(<em>n</em><sup>2</sup> − <em>n</em>)! placements that would be made by most naïve combinatorial algorithm.  
 
 | <div><em>n</em></div> | <div>Number of Queens</div><div>Placed (<em>Naïve</em>)</div> | <div>Number of Queens</div><div>Placed (<em>Constrained</em>)</div> | <div>Number of</div><div>Solutions</div> |  
-|:---:|------------------------:|------------:|-----------:|  
-|   1 |                       1 |           1 |          1 |  
-|   2 |                      12 |           2 |          0 |  
-|   3 |                     504 |           5 |          0 |  
-|   4 |                  43,680 |          16 |          2 |  
-|   5 |               6,375,600 |          53 |         10 |  
-|   6 |  1.402 × 10<sup>9</sup> |         152 |          4 |  
-|   7 | 4.329 × 10<sup>11</sup> |         551 |         40 |  
-|   8 | 1.785 × 10<sup>14</sup> |       2,056 |         92 |  
-|   9 | 9.467 × 10<sup>16</sup> |       8,393 |        352 |  
-|  10 | 6.282 × 10<sup>19</sup> |      35,538 |        724 |  
-|  11 | 5.096 × 10<sup>22</sup> |     166,925 |      2,680 |  
-|  12 | 4.963 × 10<sup>25</sup> |     856,188 |     14,200 |  
-|  13 | 5.714 × 10<sup>28</sup> |   4,674,889 |     73,712 |  
-|  14 | 7.676 × 10<sup>31</sup> |  27,358,552 |    365,596 |  
-|  15 | 1.190 × 10<sup>35</sup> | 171,129,071 |  2,279,184 |  
-|  16 | 2.109 × 10<sup>38</sup> |         ??? | 14,772,512 |  
+|:---:|------------------------:|---------------:|---------------:|  
+|   1 |                       1 |              1 |              1 |  
+|   2 |                      12 |              2 |              0 |  
+|   3 |                     504 |              5 |              0 |  
+|   4 |                  43,680 |             16 |              2 |  
+|   5 |               6,375,600 |             53 |             10 |  
+|   6 |  1.402 × 10<sup>9</sup> |            152 |              4 |  
+|   7 | 4.329 × 10<sup>11</sup> |            551 |             40 |  
+|   8 | 1.785 × 10<sup>14</sup> |          2,056 |             92 |  
+|   9 | 9.467 × 10<sup>16</sup> |          8,393 |            352 |  
+|  10 | 6.282 × 10<sup>19</sup> |         35,538 |            724 |  
+|  11 | 5.096 × 10<sup>22</sup> |        166,925 |          2,680 |  
+|  12 | 4.963 × 10<sup>25</sup> |        856,188 |         14,200 |  
+|  13 | 5.714 × 10<sup>28</sup> |      4,674,889 |         73,712 |  
+|  14 | 7.676 × 10<sup>31</sup> |     27,358,552 |        365,596 |  
+|  15 | 1.190 × 10<sup>35</sup> |    171,129,071 |      2,279,184 |  
+|  16 | 2.109 × 10<sup>38</sup> |  1,141,190,302 |     14,772,512 |  
+|  17 | 4.235 x 10<sup>41</sup> |  8,017,021,931 |     95,815,104 |  
+|  18 | 9.570 x 10<sup>44</sup> | 59,365,844,490 |    666,090,624 |
+|  19 | 2.417 x 10<sup>48</sup> |            ??? |  4,968,057,848 |
+|  20 | 6.784 x 10<sup>51</sup> |            ??? | 39,029,188,884 |
 
 According to the [On-Line Encyclopedia of Integer Sequences] \(OEIS sequence: [A000170]), the total number of solutions for the _n_-queens problem has been determined every value of _n_ up to 27.  
 
