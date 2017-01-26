@@ -25,12 +25,12 @@
 
 struct chess_board {
   // Chess board variables
-  int n_size;       // Number of queens on the n x n chess board
+  int n_size;         // Number of queens on the n x n chess board
   int *queens;        // Store queen positions on the board
   int *column;        // Store available column moves/attacks
   int *diagonal_up;   // Store available diagonal moves/attacks
   int *diagonal_down;
-  int col_i;          // Store current column to examine on the board
+  int col_j;          // Store current column to examine on the board
 };
 
 void allocation_error(const int error_code) {
@@ -84,7 +84,7 @@ struct chess_board *initialize_board(const int n_queens) {
   }
   // Initialize the chess board variables
   board->n_size = n_queens;
-  board->col_i = 0;
+  board->col_j = 0;
   for(int i = 0; i < n_queens; ++i) {
     board->queens[i] = 0;
     board->column[i] = 1;
@@ -108,26 +108,26 @@ void smash_board(struct chess_board *board) {
 }
 
 // Check if a queen can be placed in column 'i', at row 'j'
-int square_is_free(const struct chess_board *board, const int row_j) {
-  return board->column[row_j] &
-         board->diagonal_up[(board->n_size - 1) + (board->col_i - row_j)] &
-         board->diagonal_down[(board->col_i + row_j)];
+int square_is_free(const struct chess_board *board, const int row_i) {
+  return board->column[row_i] &
+         board->diagonal_up[(board->n_size - 1) + (board->col_j - row_i)] &
+         board->diagonal_down[(board->col_j + row_i)];
 }
 
 // Place a queen on the chess board
-void set_queen(struct chess_board *board, const int row_j) {
-  board->queens[board->col_i] = row_j;
-  board->column[row_j] = 0;
-  board->diagonal_up[(board->n_size - 1) + (board->col_i - row_j)] = 0;
-  board->diagonal_down[(board->col_i + row_j)] = 0;
-  board->col_i += 1;
+void set_queen(struct chess_board *board, const int row_i) {
+  board->queens[board->col_j] = row_i;
+  board->column[row_i] = 0;
+  board->diagonal_up[(board->n_size - 1) + (board->col_j - row_i)] = 0;
+  board->diagonal_down[(board->col_j + row_i)] = 0;
+  board->col_j += 1;
 }
 
-void remove_queen(struct chess_board *board, const int row_j) {
-  board->col_i -= 1;
-  board->diagonal_down[(board->col_i + row_j)] = 1;
-  board->diagonal_up[(board->n_size - 1) + (board->col_i - row_j)] = 1;
-  board->column[row_j] = 1;
+void remove_queen(struct chess_board *board, const int row_i) {
+  board->col_j -= 1;
+  board->diagonal_down[(board->col_j + row_i)] = 1;
+  board->diagonal_up[(board->n_size - 1) + (board->col_j - row_i)] = 1;
+  board->column[row_i] = 1;
 }
 
 void print_solution(const struct chess_board *board) {
@@ -138,10 +138,10 @@ void print_solution(const struct chess_board *board) {
 }
 
 void place_next_queen(struct chess_board *board) {
-  for (int row_j = 0; row_j < board->n_size; ++row_j) {
-    if (square_is_free(board, row_j)) {
-      set_queen(board, row_j);
-      if (board->col_i == board->n_size) {
+  for (int row_i = 0; row_i < board->n_size; ++row_i) {
+    if (square_is_free(board, row_i)) {
+      set_queen(board, row_i);
+      if (board->col_j == board->n_size) {
         // Chess board is full
         print_solution(board);
       } else {
@@ -150,7 +150,7 @@ void place_next_queen(struct chess_board *board) {
       }
       // Removes the queen from the chess board at column 'i', at row 'j' to
       // backtrack for the next loop
-      remove_queen(board, row_j);
+      remove_queen(board, row_i);
     }
   }
 }
@@ -159,7 +159,7 @@ int main(int argc, char *argv[]) {
   struct chess_board *board;
 	if (argc == 1) {
 	  // Defaults to the 4-queens problem if no input is provided
-    board = initialize_board(4L);
+    board = initialize_board(4);
 	} else {
     board = initialize_board(atoi(argv[1]));
   }
