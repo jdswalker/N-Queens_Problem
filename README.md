@@ -3,7 +3,7 @@ Author: James Walker
 ©2017 under the [MIT license]  
 
 ## Overview  
-The _n_-queens problem is a generalization of the [8-queens puzzle] involving how to place eight non-attacking queens on a regular [chess board]. The _n_-queens problem asks, given a positive integer _n_,  how many ways are there to place _n_ chess queens on an _n_ × _n_ chess board such that none of the queens can attack each other.  
+The _n_-queens problem is a generalization of the [8-queens puzzle] involving how to place eight non-attacking queens on a regular [chess board]. The _n_-queens problem asks, given a positive integer _n_, how many ways are there to place _n_ chess queens on an _n_ × _n_ chess board such that none of the queens can attack each other.  
 
 The programs in this repository implement a constrained depth-first search (DFS) algorithm to find solutions to the _n_-queens problem. The programs are outlined below, with further descriptions about their execution provided in their respective folders. Following this, general results are presented and explained. Lastly, an outline of the constrained DFS algorithm is provided along with a source link.  
 
