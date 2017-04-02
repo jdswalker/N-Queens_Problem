@@ -23,22 +23,22 @@
 #include <stdlib.h>
 
 // Recursive function for finding valid queen placements on the chess board
-void place_next_queen(int queens[8], int col_j, int column[8],
+void place_next_queen(int queens[8], int column_j, int column[8],
                       int diagonal_up[15], int diagonal_down[15]) {
   for (int row_i = 0; row_i < 8; ++row_i) {
     // Check if a queen can be placed on the current square
     if (column[row_i] &
-        diagonal_up[7 + col_j - row_i] &
-        diagonal_down[col_j + row_i]) {
+        diagonal_up[7 + column_j - row_i] &
+        diagonal_down[column_j + row_i]) {
 
       // Place a queen on the chess board
-      queens[col_j] = row_i;
+      queens[column_j] = row_i;
       column[row_i] = 0;
-      diagonal_up[7 + col_j - row_i] = 0;
-      diagonal_down[col_j + row_i] = 0;
-      ++col_j;
+      diagonal_up[7 + column_j - row_i] = 0;
+      diagonal_down[column_j + row_i] = 0;
+      ++column_j;
 
-      if (col_j == 8) {
+      if (column_j == 8) {
         // Chess board is full
         for (int row = 0; row < 8; ++row) {
           printf("%d ", queens[row] + 1);
@@ -46,12 +46,12 @@ void place_next_queen(int queens[8], int col_j, int column[8],
         printf("\n");
       } else {
         // Recursive call to find next queen placement on the chess board
-        place_next_queen(queens, col_j, column, diagonal_up, diagonal_down);
+        place_next_queen(queens, column_j, column, diagonal_up, diagonal_down);
         // Removes a queen from the chess board in the given column to backtrack
       }
-      --col_j;
-      diagonal_down[col_j + row_i] = 1;
-      diagonal_up[7 + col_j - row_i] = 1;
+      --column_j;
+      diagonal_down[column_j + row_i] = 1;
+      diagonal_up[7 + column_j - row_i] = 1;
       column[row_i] = 1;
     }
   }
@@ -60,7 +60,7 @@ void place_next_queen(int queens[8], int col_j, int column[8],
 int main() {
   // Parameters for solver
   int queens[8] = {0};
-  int col_j = 0;
+  int column_j = 0;
   int column[8];  // Attacks along a column
   int diagonal_up[15];  // Attacks along diagonals
   int diagonal_down[15];
@@ -78,7 +78,7 @@ int main() {
   }
 
   // Start solver algorithm
-  place_next_queen(queens, col_j, column, diagonal_up, diagonal_down);
+  place_next_queen(queens, column_j, column, diagonal_up, diagonal_down);
 
   return EXIT_SUCCESS;
 }

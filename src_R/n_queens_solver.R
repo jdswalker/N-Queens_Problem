@@ -5,7 +5,7 @@
 ## 
 ## Purpose:
 ##   The N-Queens Solver finds solutions for the N-Queens problem. That is, how
-##   many ways are there to place n chess queens on an NxN chess board such
+##   many ways are there to place N chess queens on an NxN chess board such
 ##   that none of the queens can attack each other.
 ## Example Usage:
 ##   > setwd('C:/Users/SomeUser/Desktop')
@@ -25,7 +25,7 @@
 InitializeBoard <- function(n.queens) {
   chess.board <- vector("list", 0)
   chess.board$queens <- vector(mode = "integer", length = n.queens)
-  chess.board$col.j <- 0
+  chess.board$column.j <- 0
   chess.board$column <- rep(TRUE, n.queens)
   chess.board$diagonal.up <- rep(TRUE, 2 * n.queens - 1)
   chess.board$diagonal.down <- rep(TRUE, 2 * n.queens - 1)
@@ -35,26 +35,26 @@ InitializeBoard <- function(n.queens) {
 # Check if a queen can be placed on the current square
 SquareIsFree <- function(chess.board, n.queens, row.i) {
   return(chess.board$column[row.i + 1] &
-         chess.board$diagonal.up[n.queens + chess.board$col.j - row.i] &
-         chess.board$diagonal.down[chess.board$col.j + row.i + 1])
+         chess.board$diagonal.up[n.queens + chess.board$column.j - row.i] &
+         chess.board$diagonal.down[chess.board$column.j + row.i + 1])
 }
 
 # Places a queen on the NxN chess board in the given column
 SetQueen <- function(chess.board, n.queens, row.i) {
-  chess.board$queens[chess.board$col.j + 1] <- row.i + 1
+  chess.board$queens[chess.board$column.j + 1] <- row.i + 1
   chess.board$column[row.i + 1] <- FALSE
-  chess.board$diagonal.up[n.queens + chess.board$col.j - row.i] <- FALSE
-  chess.board$diagonal.down[chess.board$col.j + row.i + 1] <- FALSE
-  chess.board$col.j <- chess.board$col.j + 1
+  chess.board$diagonal.up[n.queens + chess.board$column.j - row.i] <- FALSE
+  chess.board$diagonal.down[chess.board$column.j + row.i + 1] <- FALSE
+  chess.board$column.j <- chess.board$column.j + 1
   return(chess.board)
 }
 
 # Removes a queen from the NxN chess board in the given column to backtrack
 RemoveQueen <- function(chess.board, n.queens, row.i) {
-  chess.board$col.j <- chess.board$col.j - 1
+  chess.board$column.j <- chess.board$column.j - 1
   chess.board$column[row.i + 1] <- TRUE
-  chess.board$diagonal.up[n.queens + chess.board$col.j - row.i] <- TRUE
-  chess.board$diagonal.down[chess.board$col.j + row.i + 1] <- TRUE
+  chess.board$diagonal.up[n.queens + chess.board$column.j - row.i] <- TRUE
+  chess.board$diagonal.down[chess.board$column.j + row.i + 1] <- TRUE
   return(chess.board)
 }
 
@@ -63,7 +63,7 @@ PlaceNextQueen <- function(chess.board, n.queens, scope) {
   for (row.i in 0:(n.queens-1)) {
     if (SquareIsFree(chess.board, n.queens, row.i)) {
       chess.board <- SetQueen(chess.board, n.queens, row.i)
-      if (chess.board$col.j == n.queens) {
+      if (chess.board$column.j == n.queens) {
         solved.list <- get('solutions', envir = scope)
         solved.list[length(solved.list) + 1] <- paste(chess.board$queens,
                                                       collapse = " ", sep = "")

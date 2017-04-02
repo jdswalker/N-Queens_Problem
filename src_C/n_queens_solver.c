@@ -1,11 +1,11 @@
-// n-Queens Solver
+// N-Queens Solver
 // Author: James Walker
 // Copyrighted 2017 under the MIT license:
 //   http://www.opensource.org/licenses/mit-license.php
 //
 // Purpose: 
-//   The n-Queens Solver finds solutions for the n-Queens problem. That is, how
-//   many ways are there to place n chess queens on an n x n chess board such
+//   The N-Queens Solver finds solutions for the N-Queens problem. That is, how
+//   many ways are there to place N chess queens on an NxN chess board such
 //   that none of the queens can attack each other.
 // Compilation, Execution and Partial Output:
 //   $ gcc -std=c99 n_queens_solver.c -o n_queens_solver
@@ -25,12 +25,12 @@
 
 struct chess_board {
   // Chess board variables
-  int n_size;         // Number of queens on the n x n chess board
+  int n_size;         // Number of queens on the NxN chess board
   int *queens;        // Store queen positions on the board
   int *column;        // Store available column moves/attacks
   int *diagonal_up;   // Store available diagonal moves/attacks
   int *diagonal_down;
-  int col_j;          // Store current column to examine on the board
+  int column_j;          // Store current column to examine on the board
 };
 
 void allocation_error(const int error_code) {
@@ -84,7 +84,7 @@ struct chess_board *initialize_board(const int n_queens) {
   }
   // Initialize the chess board variables
   board->n_size = n_queens;
-  board->col_j = 0;
+  board->column_j = 0;
   for(int i = 0; i < n_queens; ++i) {
     board->queens[i] = 0;
     board->column[i] = 1;
@@ -110,23 +110,23 @@ void smash_board(struct chess_board *board) {
 // Check if a queen can be placed in column 'i', at row 'j'
 int square_is_free(const struct chess_board *board, const int row_i) {
   return board->column[row_i] &
-         board->diagonal_up[(board->n_size - 1) + (board->col_j - row_i)] &
-         board->diagonal_down[(board->col_j + row_i)];
+         board->diagonal_up[(board->n_size - 1) + (board->column_j - row_i)] &
+         board->diagonal_down[(board->column_j + row_i)];
 }
 
 // Place a queen on the chess board
 void set_queen(struct chess_board *board, const int row_i) {
-  board->queens[board->col_j] = row_i;
+  board->queens[board->column_j] = row_i;
   board->column[row_i] = 0;
-  board->diagonal_up[(board->n_size - 1) + (board->col_j - row_i)] = 0;
-  board->diagonal_down[(board->col_j + row_i)] = 0;
-  board->col_j += 1;
+  board->diagonal_up[(board->n_size - 1) + (board->column_j - row_i)] = 0;
+  board->diagonal_down[(board->column_j + row_i)] = 0;
+  board->column_j += 1;
 }
 
 void remove_queen(struct chess_board *board, const int row_i) {
-  board->col_j -= 1;
-  board->diagonal_down[(board->col_j + row_i)] = 1;
-  board->diagonal_up[(board->n_size - 1) + (board->col_j - row_i)] = 1;
+  board->column_j -= 1;
+  board->diagonal_down[(board->column_j + row_i)] = 1;
+  board->diagonal_up[(board->n_size - 1) + (board->column_j - row_i)] = 1;
   board->column[row_i] = 1;
 }
 
@@ -141,7 +141,7 @@ void place_next_queen(struct chess_board *board) {
   for (int row_i = 0; row_i < board->n_size; ++row_i) {
     if (square_is_free(board, row_i)) {
       set_queen(board, row_i);
-      if (board->col_j == board->n_size) {
+      if (board->column_j == board->n_size) {
         // Chess board is full
         print_solution(board);
       } else {
