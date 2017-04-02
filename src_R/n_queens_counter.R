@@ -1,17 +1,17 @@
-## n-Queens Queen Placement and Solutions Counter
+## N-Queens Placement and Solutions Counter
 ## Author: James Walker
 ## Copyrighted 2017 under the MIT license:
 ##   http://www.opensource.org/licenses/mit-license.php
 ##
-## Purpose: The n-Queens Counter finds follows the same algorithm as the
-##   n-Queens Solver, except it does not return any of the solutions. Instead,
-##   the program counts the number of solutions for a given n-Queens problem as
-##   well as the number of times a queen is placed during the program's
-##   execution.
+## Purpose:
+##   The N-Queens Counter follows the same algorithm as the N-Queens Solver,
+##   except it does not return any of the solutions. Instead, the program
+##   counts the number of solutions for a given N-Queens problem as well as the
+##   number of times a queen is placed during the program's execution.
 ## Example Usage:
 ##   > setwd('C:/Users/SomeUser/Desktop')
-##   > source('n-Queens_Counter.R')
-##   > # Outputting solutions and placements for three of the n-queens problems:
+##   > source('n_queens_counter.R')
+##   > # Outputting solutions and placements for three of the N-queens problems:
 ##   > for (n in 5:7) {
 ##   +   writeLines(CountNQueens(n))
 ##   + }
@@ -22,7 +22,7 @@
 ## This implementation is based off the algorithm provided at the bottom of this
 ## webpage: www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD316.9.html
 
-# Initializes starting values for the n x n chess board
+# Initializes starting values for the NxN chess board
 InitializeBoard <- function(n.queens) {
   chess.board <- vector("list", 0)
   chess.board$queens <- vector(mode = "integer", length = n.queens)
@@ -40,7 +40,7 @@ SquareIsFree <- function(chess.board, n.queens, row.i) {
          chess.board$diagonal.down[chess.board$col.j + row.i])
 }
 
-# Places a queen on the n x n chess board in the given column
+# Places a queen on the NxN chess board in the given row
 SetQueen <- function(chess.board, n.queens, row.i) {
   chess.board$column[row.i] <- FALSE
   chess.board$diagonal.down[chess.board$col.j + row.i] <- FALSE
@@ -50,7 +50,7 @@ SetQueen <- function(chess.board, n.queens, row.i) {
   return(chess.board)
 }
 
-# Removes a queen from the n x n chess board in the given column to backtrack
+# Removes a queen from the NxN chess board in the given column to backtrack
 RemoveQueen <- function(chess.board, n.queens, row.i) {
   chess.board$column[row.i] <- TRUE
   chess.board$diagonal.up[n.queens + chess.board$col.j - row.i] <- TRUE
@@ -78,13 +78,13 @@ PlaceNextQueen <- function(chess.board, n.queens, scope) {
   }
 }
 
-# Starting point for the n-Queens counter
+# Starting point for the N-Queens counter
 CountNQueens <- function(n.queens) {
   if(n.queens > 0) {
     solver.env <- new.env()  # Defines scope to access placements and solutions
     solver.env$placements <- 0  # Total queens placed during execution
     solver.env$solutions <- 0  # Total number of solutions found
-    # Begin counting n-queens placements and solutions
+    # Begin counting N-queens placements and solutions
     PlaceNextQueen(InitializeBoard(n.queens), n.queens, solver.env)
     # Returns a string with the counted results
     return(paste("The ", n.queens, "-Queens problem required ",

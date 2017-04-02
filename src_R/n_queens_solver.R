@@ -1,14 +1,15 @@
-## n-Queens Solver
+## N-Queens Solver
 ## Author: James Walker
 ## Copyrighted 2017 under the MIT license:
 ##   http://www.opensource.org/licenses/mit-license.php
 ## 
-## Purpose: The n-Queens Solver finds solutions for the n-Queens problem. That
-##   is, how many ways are there to place n chess queens on an n x n chess board
-##   such that none of the queens can attack each other.
+## Purpose:
+##   The N-Queens Solver finds solutions for the N-Queens problem. That is, how
+##   many ways are there to place n chess queens on an NxN chess board such
+##   that none of the queens can attack each other.
 ## Example Usage:
 ##   > setwd('C:/Users/SomeUser/Desktop')
-##   > source('n-Queens_Solver.R')
+##   > source('n_queens_solver.R')
 ##   > # Display solutions to the 4-queens problem in standard out:
 ##   > SolveNQueens(4)
 ##   The solver found 2 solutions for the 4-Queens problem  
@@ -20,7 +21,7 @@
 ## This implementation is based off the algorithm provided at the bottom of this
 ## webpage: www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD316.9.html
 
-# Initializes starting values for the n x n chess board
+# Initializes starting values for the NxN chess board
 InitializeBoard <- function(n.queens) {
   chess.board <- vector("list", 0)
   chess.board$queens <- vector(mode = "integer", length = n.queens)
@@ -38,7 +39,7 @@ SquareIsFree <- function(chess.board, n.queens, row.i) {
          chess.board$diagonal.down[chess.board$col.j + row.i + 1])
 }
 
-# Places a queen on the n x n chess board in the given column
+# Places a queen on the NxN chess board in the given column
 SetQueen <- function(chess.board, n.queens, row.i) {
   chess.board$queens[chess.board$col.j + 1] <- row.i + 1
   chess.board$column[row.i + 1] <- FALSE
@@ -48,7 +49,7 @@ SetQueen <- function(chess.board, n.queens, row.i) {
   return(chess.board)
 }
 
-# Removes a queen from the n x n chess board in the given column to backtrack
+# Removes a queen from the NxN chess board in the given column to backtrack
 RemoveQueen <- function(chess.board, n.queens, row.i) {
   chess.board$col.j <- chess.board$col.j - 1
   chess.board$column[row.i + 1] <- TRUE
@@ -90,7 +91,7 @@ OutputSolutions <- function(solutions, n.queens, filename) {
   }
 }
 
-# Starting point for the n-Queens solver
+# Starting point for the N-Queens solver
 SolveNQueens <- function(n.queens, filename = "") {
   if (n.queens > 0) {
     solver.env <- new.env()
