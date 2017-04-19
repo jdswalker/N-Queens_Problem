@@ -52,7 +52,7 @@ The _N_-queens solver algorithm was improved in the Python implementations to ta
 |  19 | 2.417 × 10<sup>48</sup> |            ??? |         ??? |  4,968,057,848 |
 |  20 | 6.784 × 10<sup>51</sup> |            ??? |         ??? | 39,029,188,884 |
 
-According to the [On-Line Encyclopedia of Integer Sequences] \(OEIS sequence: [A000170]), the total number of solutions for the _N_-queens problem has been determined every value of _N_ up to 27.  
+According to the [On-Line Encyclopedia of Integer Sequences] \(OEIS sequence: [A000170]), the total number of solutions for the _N_-queens problem has been determined for every value of _N_ up to 27.  
 
 ### Constrained DFS Algorithm Details  
 The algorithm implemented to solve the 8-queens problem was obtained online from the bottom of the webpage for [A Short Introduction to the Art of Programming] by [Dr. Edsger W. Dijkstra]. The 8-queens solver algorithm, shown below, has been adapted and reformatted from the one provided in the link above.  
@@ -65,6 +65,22 @@ The algorithm implemented to solve the 8-queens problem was obtained online from
   boolean array col[0:7]  
   boolean array up[-7:+7]  
   boolean array down[0:14]  
+  
+  begin INITIALIZE EMPTY BOARD:  
+    n := 0  
+    k := 0  
+    repeat until k = 8  
+      col[k] := true  
+      k := k + 1  
+    end repeat  
+    k := 0  
+    repeat until k = 15  
+      up[k-7] := true  
+      down[k] := true  
+      k := k + 1  
+    end repeat  
+  end INITIALIZE EMPTY BOARD
+
   procedure PLACE NEXT QUEEN:  
     h := 0  
     repeat until h = 8:  
@@ -85,7 +101,7 @@ The algorithm implemented to solve the 8-queens problem was obtained online from
             end repeat  
             print(newline)  
           end PRINT QUEEN POSITIONS  
-        else BOARD NOT FULL:  
+        else:  
           PLACE NEXT QUEEN  
         end if BOARD FULL  
         begin REMOVE QUEEN FROM SQUARE H:  
@@ -98,21 +114,10 @@ The algorithm implemented to solve the 8-queens problem was obtained online from
       h := h + 1  
     end repeat  
   end procedure PLACE NEXT QUEEN  
-  begin INITIALIZE EMPTY BOARD:  
-    n := 0  
-    k := 0  
-    repeat until k = 8  
-      col[k] := true  
-      k := k + 1  
-    end repeat  
-    k := 0  
-    repeat until k = 15  
-      up[k-7] := true  
-      down[k] := true  
-      k := k + 1  
-    end repeat  
-  end INITIALIZE EMPTY BOARD
-  PLACE NEXT QUEEN  
+  
+  call INITIALIZE EMPTY BOARD
+  call PLACE NEXT QUEEN  
+  
 end ALGORITHM</pre>   
 
 [MIT license]: http://www.opensource.org/licenses/mit-license.php  
