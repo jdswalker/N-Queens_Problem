@@ -68,8 +68,8 @@ struct chess_board *initialize_board(const int n_queens) {
     allocation_error(1);
   }
   // Dynamically allocate memory for chessboard variables
-  board->queens = (int *)malloc(sizeof(int) * n_queens);
-  if(board->queens == NULL) {
+  board->queen_positions = (int *)malloc(sizeof(int) * n_queens);
+  if(board->queen_positions == NULL) {
     allocation_error(2);
   }
   board->column = (int *)malloc(sizeof(int) * n_queens);
@@ -90,7 +90,7 @@ struct chess_board *initialize_board(const int n_queens) {
   board->placements = 0;
   board->solutions = 0;
   for(int i = 0; i < n_queens; ++i) {
-    board->queens[i] = 0;
+    board->queen_positions[i] = 0;
     board->column[i] = 1;
     board->diagonal_up[i] = 1;
     board->diagonal_down[i] = 1;
@@ -105,7 +105,7 @@ struct chess_board *initialize_board(const int n_queens) {
 
 // Frees the dynamically allocated memory for the chess board structure
 void smash_board(struct chess_board *board) {
-  free(board->queens);
+  free(board->queen_positions);
   free(board->column);
   free(board->diagonal_up);
   free(board->diagonal_down);
@@ -121,7 +121,7 @@ int square_is_free(const struct chess_board *board, const int row_i) {
 
 // Place a queen on the chess board
 void set_queen(struct chess_board *board, const int row_i) {
-  board->queens[board->column_j] = row_i;
+  board->queen_positions[board->column_j] = row_i;
   board->column[row_i] = 0;
   board->diagonal_up[(board->n_size - 1) + (board->column_j - row_i)] = 0;
   board->diagonal_down[(board->column_j + row_i)] = 0;
