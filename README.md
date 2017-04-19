@@ -66,20 +66,20 @@ The algorithm implemented to solve the 8-queens problem was obtained online from
   boolean array up[-7:+7]  
   boolean array down[0:14]  
   
-  begin INITIALIZE EMPTY BOARD:  
+  procedure INITIALIZE EMPTY BOARD:  
     n := 0  
     k := 0  
-    repeat until k = 8  
+    repeat until k = 8:  
       col[k] := true  
       k := k + 1  
     end repeat  
     k := 0  
-    repeat until k = 15  
+    repeat until k = 15:  
       up[k-7] := true  
       down[k] := true  
       k := k + 1  
     end repeat  
-  end INITIALIZE EMPTY BOARD
+  end procedure INITIALIZE EMPTY BOARD
 
   procedure PLACE NEXT QUEEN:  
     h := 0  
@@ -95,14 +95,14 @@ The algorithm implemented to solve the 8-queens problem was obtained online from
         if BOARD FULL (n = 8):  
           begin PRINT QUEEN POSITIONS:  
             k := 0  
-            repeat until k = 8  
+            repeat until k = 8:  
               print(x[k])  
               k := k + 1  
             end repeat  
             print(newline)  
           end PRINT QUEEN POSITIONS  
         else:  
-          PLACE NEXT QUEEN  
+          call PLACE NEXT QUEEN  
         end if BOARD FULL  
         begin REMOVE QUEEN FROM SQUARE H:  
           n := n - 1  
