@@ -91,7 +91,7 @@ def get_counts_for_n_queens_solutions(number_of_queens):
     finding all of the valid solutions for a given number of queens. The number
     of queen placements and solutions is then returned."""
     total_queen_placements = 0
-    total_n_queens_solutions = 0
+    total_n_queens_solutions = 0 if number_of_queens != 1 else 1
     # The next two variables are used to divide the search-space of the chess
     # board in half by taking advantage of the symmetry in the chess board
     number_of_column_pairs = number_of_queens // 2

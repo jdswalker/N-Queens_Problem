@@ -136,6 +136,8 @@ def get_counts_for_n_queens_solutions(number_of_queens):
     process_pool.join()
     total_queen_placements = sum(first for first, __ in list_of_counts)
     total_n_queens_solutions = sum(second for __, second in list_of_counts)
+    if number_of_queens == 1:
+      total_n_queens_solutions = 1
     return (total_queen_placements, total_n_queens_solutions)
 
 
@@ -150,7 +152,7 @@ def main(argv):
         number_of_queens = int(argv[0])
     queen_placements, n_queens_solutions = \
         get_counts_for_n_queens_solutions(number_of_queens)
-    result_string = "\nThe %d-Queens problem required %d queen placements\n" \
+    result_string = "\nThe %d-Queens problem required %d queen placements " \
                     "to find all %d solutions"
     print (result_string) % (number_of_queens, queen_placements,
                              n_queens_solutions)
