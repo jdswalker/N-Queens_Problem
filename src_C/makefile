@@ -11,7 +11,7 @@ PROGRAMS = $(EIGHTQ_SOLVER) $(NQ_SOLVER) $(NQ_COUNTER)
 ## Compilers, linkers, utilities, and flags
 CC = gcc
 STD = -std=c99
-CFLAGS = -Wall -Werror
+CFLAGS = -pedantic -Wall -Werror -Wextra
 OPTLVL = -O2
 
 ## Create executables for all target programs
