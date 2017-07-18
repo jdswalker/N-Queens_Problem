@@ -35,7 +35,7 @@ struct chess_board {
   uint32_t solutions;         // Tracks number of solutions
 };
 
-struct chess_board *initialize_board(const int n_queens) {
+struct chess_board *initialize_board(const uint32_t n_queens) {
   if (n_queens < 1) {
     fprintf(stderr, "The number of queens must be greater than 0.\n");
     exit(EXIT_FAILURE);
@@ -49,8 +49,8 @@ struct chess_board *initialize_board(const int n_queens) {
   }
 
   // Dynamically allocate memory for chessboard arrays that track positions
-  const int diagonal_size = 2 * n_queens - 1;
-  const int total_size = 2 * (n_queens + diagonal_size);
+  const uint32_t diagonal_size = 2 * n_queens - 1;
+  const uint32_t total_size = 2 * (n_queens + diagonal_size);
   board->queen_positions = malloc(sizeof(uint32_t) * total_size);
   if(board->queen_positions == NULL) {
     fprintf(stderr, "Memory allocation failed for the chess board arrays.\n");
@@ -62,10 +62,10 @@ struct chess_board *initialize_board(const int n_queens) {
 
   // Initialize the chess board variables
   board->n_size = n_queens;
-  for(int i = 0; i < n_queens; ++i) {
+  for(uint32_t i = 0; i < n_queens; ++i) {
     board->queen_positions[i] = 0;
   }
-  for(int i = n_queens; i < total_size; ++i) {
+  for(uint32_t i = n_queens; i < total_size; ++i) {
     // Initializes values for column, diagonal_up, and diagonal_down
     board->queen_positions[i] = 1;
   }
@@ -83,14 +83,14 @@ void smash_board(struct chess_board *board) {
 }
 
 // Check if a queen can be placed in column 'i', at row 'j'
-int square_is_free(const struct chess_board *board, const int row_i) {
+int square_is_free(const struct chess_board *board, const uint32_t row_i) {
   return board->column[row_i] &
          board->diagonal_up[(board->n_size - 1) + (board->column_j - row_i)] &
          board->diagonal_down[board->column_j + row_i];
 }
 
 // Place a queen on the chess board
-void set_queen(struct chess_board *board, const int row_i) {
+void set_queen(struct chess_board *board, const uint32_t row_i) {
   board->queen_positions[board->column_j] = row_i;
   board->column[row_i] = 0;
   board->diagonal_up[(board->n_size - 1) + (board->column_j - row_i)] = 0;
@@ -100,7 +100,7 @@ void set_queen(struct chess_board *board, const int row_i) {
 }
 
 // Removes a queen from the NxN chess board in the given column to backtrack
-void remove_queen(struct chess_board *board, const int row_i) {
+void remove_queen(struct chess_board *board, const uint32_t row_i) {
   --board->column_j;
   board->diagonal_down[board->column_j + row_i] = 1;
   board->diagonal_up[(board->n_size - 1) + (board->column_j - row_i)] = 1;
