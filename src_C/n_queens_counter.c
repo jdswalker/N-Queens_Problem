@@ -25,90 +25,60 @@
 
 struct chess_board {
   // Chess board variables
-  int n_size;             // Number of queens on the n x n chess board
-  int *queen_positions;   // Store queen positions on the board
-  int *column;            // Store available column moves/attacks
-  int *diagonal_up;       // Store available diagonal moves/attacks
-  int *diagonal_down;
-  int column_j;           // Store current column to examine on the board
-  uint64_t placements;    // Tracks total number queen placements
-  int solutions;          // Tracks number of solutions
+  uint32_t n_size;            // Number of queens on the NxN chess board
+  uint32_t *queen_positions;  // Store queen positions on the board
+  uint32_t *column;           // Store available column moves/attacks
+  uint32_t *diagonal_up;      // Store available diagonal moves/attacks
+  uint32_t *diagonal_down;
+  uint32_t column_j;          // Store current column to examine on the board
+  uint64_t placements;        // Tracks total number queen placements
+  uint32_t solutions;         // Tracks number of solutions
 };
-
-void allocation_error(const int error_code) {
-  switch (error_code) {
-    case 0:
-      fprintf(stderr, "The number of queens must be greater than 0.\n");
-    case 1:
-      fprintf(stderr, "Failed to allocate memory for chess board.\n");
-      break;
-    case 2:
-      fprintf(stderr, "Failed to allocate memory for chess queens.\n");
-      break;
-    case 3:
-      fprintf(stderr, "Failed to allocate memory for column attacks.\n");
-      break;
-    case 4:
-      fprintf(stderr, "Failed to allocate memory for diagonal up attacks.\n");
-      break;
-    case 5:
-      fprintf(stderr, "Failed to allocate memory for diagonal down attacks.\n");
-      break;
-  }
-  exit(EXIT_FAILURE);
-}
 
 struct chess_board *initialize_board(const int n_queens) {
   if (n_queens < 1) {
-    allocation_error(0);
+    fprintf(stderr, "The number of queens must be greater than 0.\n");
+    exit(EXIT_FAILURE);
   }
+
   // Dynamically allocate memory for chessboard
   struct chess_board *board = malloc(sizeof(struct chess_board));
   if (board == NULL) {
-    allocation_error(1);
+    fprintf(stderr, "Memory allocation failed for chess board.\n");
+    exit(EXIT_FAILURE);
   }
-  // Dynamically allocate memory for chessboard variables
-  board->queen_positions = (int *)malloc(sizeof(int) * n_queens);
+
+  // Dynamically allocate memory for chessboard arrays that track positions
+  const int diagonal_size = 2 * n_queens - 1;
+  const int total_size = 2 * (n_queens + diagonal_size);
+  board->queen_positions = malloc(sizeof(uint32_t) * total_size);
   if(board->queen_positions == NULL) {
-    allocation_error(2);
+    fprintf(stderr, "Memory allocation failed for the chess board arrays.\n");
+    exit(EXIT_FAILURE);
   }
-  board->column = (int *)malloc(sizeof(int) * n_queens);
-  if(board->column == NULL) {
-    allocation_error(3);
-  }
-  board->diagonal_up = (int *)malloc(sizeof(int) * (2*n_queens - 1));
-  if(board->diagonal_up == NULL) {
-    allocation_error(4);
-  }
-  board->diagonal_down = (int *)malloc(sizeof(int) * (2*n_queens - 1));
-  if(board->diagonal_down == NULL) {
-    allocation_error(5);
-  }
+  board->column = &board->queen_positions[n_queens];
+  board->diagonal_up = &board->column[n_queens];
+  board->diagonal_down = &board->diagonal_up[diagonal_size];
+
   // Initialize the chess board variables
   board->n_size = n_queens;
+  for(int i = 0; i < n_queens; ++i) {
+    board->queen_positions[i] = 0;
+  }
+  for(int i = n_queens; i < total_size; ++i) {
+    // Initializes values for column, diagonal_up, and diagonal_down
+    board->queen_positions[i] = 1;
+  }
   board->column_j = 0;
   board->placements = 0;
   board->solutions = 0;
-  for(int i = 0; i < n_queens; ++i) {
-    board->queen_positions[i] = 0;
-    board->column[i] = 1;
-    board->diagonal_up[i] = 1;
-    board->diagonal_down[i] = 1;
-  }
-  // Initialize remaining array indices
-  for(int i = n_queens; i < (2*n_queens - 1); ++i) {
-    board->diagonal_up[i] = 1;
-    board->diagonal_down[i] = 1;
-  }
+
   return board;
 }
 
 // Frees the dynamically allocated memory for the chess board structure
 void smash_board(struct chess_board *board) {
   free(board->queen_positions);
-  free(board->column);
-  free(board->diagonal_up);
-  free(board->diagonal_down);
   free(board);
 }
 
@@ -116,7 +86,7 @@ void smash_board(struct chess_board *board) {
 int square_is_free(const struct chess_board *board, const int row_i) {
   return board->column[row_i] &
          board->diagonal_up[(board->n_size - 1) + (board->column_j - row_i)] &
-         board->diagonal_down[(board->column_j + row_i)];
+         board->diagonal_down[board->column_j + row_i];
 }
 
 // Place a queen on the chess board
@@ -124,34 +94,33 @@ void set_queen(struct chess_board *board, const int row_i) {
   board->queen_positions[board->column_j] = row_i;
   board->column[row_i] = 0;
   board->diagonal_up[(board->n_size - 1) + (board->column_j - row_i)] = 0;
-  board->diagonal_down[(board->column_j + row_i)] = 0;
+  board->diagonal_down[board->column_j + row_i] = 0;
   ++board->column_j;
   ++board->placements;
 }
 
-// Removes a queen from the n x n chess board in the given column to backtrack
+// Removes a queen from the NxN chess board in the given column to backtrack
 void remove_queen(struct chess_board *board, const int row_i) {
   --board->column_j;
-  board->diagonal_down[(board->column_j + row_i)] = 1;
+  board->diagonal_down[board->column_j + row_i] = 1;
   board->diagonal_up[(board->n_size - 1) + (board->column_j - row_i)] = 1;
   board->column[row_i] = 1;
 }
 
-// Prints the number of queen placements and solutions for the n x n chess board
+// Prints the number of queen placements and solutions for the NxN chess board
 void print_counts(const struct chess_board *board) {
-  fprintf(stdout, "The %d-Queens problem "
-                  "required %"PRIu64" queen placements "
-                  "to find all %d solutions\n",
-                  board->n_size, board->placements, board->solutions);
+  const char *output = "The %d-Queens problem required "
+                       "%"PRIu64" queen placements to find all %d solutions\n";
+  fprintf(stdout, output, board->n_size, board->placements, board->solutions);
 }
 
 // Recursive function for finding valid queen placements on the chess board
 void place_next_queen(struct chess_board *board) {
-  for (int row_i = 0; row_i < board->n_size; ++row_i) {
+  for (uint32_t row_i = 0; row_i < board->n_size; ++row_i) {
     if (square_is_free(board, row_i)) {
       set_queen(board, row_i);
       if (board->column_j == board->n_size) {
-        // Chess board has n x n queens set
+        // Chess board has NxN queens set
         ++board->solutions;
       } else {
         place_next_queen(board);
@@ -169,10 +138,10 @@ int main(int argc, char *argv[]) {
 	} else {
     board = initialize_board(atoi(argv[1]));
   }
-  // Start solver algorithm
-  place_next_queen(board);
+
+  place_next_queen(board);  // Start solver algorithm
   print_counts(board);
-  // Free dynamically allocated memory
-  smash_board(board);
+  smash_board(board);  // Free dynamically allocated memory
+
   return EXIT_SUCCESS;
 }
