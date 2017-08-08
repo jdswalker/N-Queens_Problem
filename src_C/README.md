@@ -1,5 +1,5 @@
 # _N_-Queens Problem  
-Author: James Walker  
+Author: [James Walker](http://github.com/JDSWalker)  
 ©2017 under the [MIT license]  
 
 ## _N_-Queens Solvers Implemented in the C Programming Language  
@@ -47,9 +47,9 @@ $ ./n_queens_solver.exe 6
 $ make n_queens_counter  
 gcc -std=c99 -O2 -Wall -Werror n_queens_counter.c -o n_queens_counter  
 $ ./n_queens_counter.exe  
-The 4-Queens problem required 16 queen placements to find all 2 solutions  
+The 4-Queens problem required 8 queen placements to find all 2 solutions  
 $ ./n_queens_counter.exe 12  
-The 12-Queens problem required 856188 queen placements to find all 14200 solutions  
+The 12-Queens problem required 428094 queen placements to find all 14200 solutions  
 ```  
 
 [MIT license]: http://www.opensource.org/licenses/mit-license.php  
