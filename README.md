@@ -28,6 +28,10 @@ of the constrained DFS algorithm is provided along with a source link.
 - _N_-Queens Solver (`n_queens_solver.R`)  
 - _N_-Queens Counter (`n_queens_counter.R`, `n_queens_counter_optimized.R`)  
 
+**Shell Script Programs in the** `src_Shell` **folder**:  
+- _N_-Queens Solver (`n_queens_solver.sh`)  
+- _N_-Queens Counter (`n_queens_counter.sh`)  
+
 Results from the solver program are output as a series of _N_ integers 
 corresponding to the columns on the chess board, with each integer represents 
 the row of the queen in the given column from A to H. In the example shown 
