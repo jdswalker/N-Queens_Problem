@@ -1,5 +1,5 @@
 # _N_-Queens Problem  
-Author: James Walker  
+Author: [James Walker](http://github.com/JDSWalker)  
 ©2017 under the [MIT license]  
 
 ## _N_-Queens Solver and _N_-Queens Counter in R  
