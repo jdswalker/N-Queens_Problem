@@ -4,18 +4,18 @@
 //   http://www.opensource.org/licenses/mit-license.php
 //
 // Purpose: 
-//   The N-Queens Counter finds follows an improved version of the algorithm
-//   used by the N-Queens Solver, except it does not return any of the
-//   solutions. Instead, the program counts the number of solutions for a given
-//   N-Queens problem as well as the number of times a queen is placed during
-//   the program's execution.
-// Compilation, Execution, and Partial Output:
+//   The N-Queens Counter follows an improved version of the algorithm used by
+//   the N-Queens Solver, except it does not return any of the solutions.
+//   Instead, the program counts the number of solutions for a given N-Queens
+//   problem as well as the number of times a queen is placed during the
+//   program's execution.
+// Compilation, Execution, and Example Output:
 //   $ gcc -std=c99 -O2 n_queens_counter.c -o n_queens_counter
 //   $ ./n_queens_counter.exe 12
 //   The 12-Queens problem required 428094 queen placements to find all 14200
 //   solutions
 //
-// This implementation adapted from the algorithm provided at the bottom of
+// This implementation was adapted from the algorithm provided at the bottom of
 // this webpage:
 //   www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD316.9.html
 
@@ -33,7 +33,7 @@ struct chess_board {
   uint32_t *diagonal_down;
   uint32_t column_j;          // Stores column to place the next queen in
   uint64_t placements;        // Tracks total number queen placements
-  uint32_t solutions;         // Tracks number of solutions
+  uint64_t solutions;         // Tracks number of solutions
 };
 static struct chess_board *board;
 
@@ -41,7 +41,7 @@ static struct chess_board *board;
 static void initialize_board(const uint32_t n_queens) {
   if (n_queens < 1) {
     fprintf(stderr, "The number of queens must be greater than 0.\n");
-    exit(EXIT_FAILURE);
+    exit(EXIT_SUCCESS);
   }
 
   // Dynamically allocate memory for chessboard struct
@@ -55,8 +55,9 @@ static void initialize_board(const uint32_t n_queens) {
   const uint32_t diagonal_size = 2 * n_queens - 1;
   const uint32_t total_size = 2 * (n_queens + diagonal_size);
   board->queen_positions = malloc(sizeof(uint32_t) * total_size);
-  if(board->queen_positions == NULL) {
+  if (board->queen_positions == NULL) {
     fprintf(stderr, "Memory allocation failed for the chess board arrays.\n");
+    free(board);
     exit(EXIT_FAILURE);
   }
   board->column = &board->queen_positions[n_queens];
@@ -65,10 +66,10 @@ static void initialize_board(const uint32_t n_queens) {
 
   // Initialize the chess board parameters
   board->n_size = n_queens;
-  for(uint32_t i = 0; i < n_queens; ++i) {
+  for (uint32_t i = 0; i < n_queens; ++i) {
     board->queen_positions[i] = 0;
   }
-  for(uint32_t i = n_queens; i < total_size; ++i) {
+  for (uint32_t i = n_queens; i < total_size; ++i) {
     // Initializes values for column, diagonal_up, and diagonal_down
     board->queen_positions[i] = 1;
   }
@@ -111,9 +112,9 @@ static void remove_queen(const uint32_t row_i) {
 // Prints the number of queen placements and solutions for the NxN chess board
 static void print_counts() {
   // The next line fixes double-counting when solving the 1-queen problem
-  const uint32_t solution_count = board->n_size == 1 ? 1 : board->solutions;
+  const uint64_t solution_count = board->n_size == 1 ? 1 : board->solutions;
   const char const output[] = "The %u-Queens problem required %lu queen "
-                              "placements to find all %u solutions\n";
+                              "placements to find all %lu solutions\n";
   fprintf(stdout, output, board->n_size, board->placements, solution_count);
 }
 
