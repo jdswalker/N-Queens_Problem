@@ -21,10 +21,14 @@ of the constrained DFS algorithm is provided along with a source link.
 - _N_-Queens Solver (`n_queens_solver.c`)  
 - _N_-Queens Counter (`n_queens_counter.c`)  
 
-**Python Programs in the** `src_Python` **folder**:  
+**Go Programs in the** `src_Go` **folder**:  
+- _N_-Queens Solver (`n_queens_solver.go`)  
+- _N_-Queens Counter (`n_queens_counter.go`)  
+
+**Python Scripts in the** `src_Python` **folder**:  
 - _N_-Queens Counter (`n_queens_counter.py`, `n_queens_multicore_counter.py`)  
 
-**R Programs in the** `src_R` **folder**:  
+**R Scripts in the** `src_R` **folder**:  
 - _N_-Queens Solver (`n_queens_solver.R`)  
 - _N_-Queens Counter (`n_queens_counter.R`, `n_queens_counter_optimized.R`)  
 
@@ -44,8 +48,8 @@ at `A1`, `B5`, `C8`, `D6`, `E3`, `F7`, `G2`, and `H4`.
 ### Number Solutions for _N_-Queens Problems  
 The _N_-Queens Counter programs have been used to find the number of queen 
 placements and the number of _N_-queens solutions for values of _N_ between 1 
-and 15 with the Python and R implementations, and values of _N_ between 1 and 
-19 with the C implementation. As can be seen from the results in the table 
+and 15 with the Go, Python, and R implementations, and values of _N_ between 1 
+and 19 with the C implementation. As can be seen from the results in the table 
 below, the constrained DFS algorithm significantly reduces the search-space of 
 the problem compared to the (_N_<sup>2</sup>)!/(_N_<sup>2</sup> − _N_)! 
 placements that would be made by most naïve combinatorial algorithm.  
