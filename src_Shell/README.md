@@ -10,7 +10,7 @@ Similar to the 8-queens solver in the `src_C` folder, each solution will consist
 <img src="./../img/8-Queens_Example.png" title="One Solution to the 8-Queens Problem" alt="8-Queens Solution Example" height="413" width="413"/>   
 
 **Required Tools:**  
-- A terminal running Bash
+- A terminal running Bash version 4+
 
 **Executing the _N_-Queens Solver Program:**  
 ```  
@@ -31,4 +31,3 @@ to find all 4 solutions
 ```  
 
 [MIT license]: http://www.opensource.org/licenses/mit-license.php  
-[R version 3.0]: http://www.r-project.org/  
