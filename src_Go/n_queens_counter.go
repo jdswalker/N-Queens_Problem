@@ -34,26 +34,35 @@ func initialize_board(n_size int) *ChessBoard {
 	return board
 }
 
-func place_next_queen(board *ChessBoard) {
-	for row_i := 0; row_i < len(board.columns); row_i++ {
-		if board.columns[row_i] && board.diagonal_up[len(board.columns)-1+board.column_j-row_i] && board.diagonal_down[board.column_j+row_i] {
-			board.columns[row_i] = false
-			board.diagonal_up[len(board.columns)-1+board.column_j-row_i] = false
-			board.diagonal_down[board.column_j+row_i] = false
-			board.column_j++
-			board.placements++
+func (board *ChessBoard) square_is_free(row_i int) bool {
+	return board.columns[row_i] &&
+		board.diagonal_up[cap(board.columns)-1+board.column_j-row_i] &&
+		board.diagonal_down[board.column_j+row_i]
+}
 
-			if board.column_j == len(board.columns) {
-				// Chess board is full
+func (board *ChessBoard) set_queen(row_i int) {
+	board.columns[row_i] = false
+	board.diagonal_up[cap(board.columns)-1+board.column_j-row_i] = false
+	board.diagonal_down[board.column_j+row_i] = false
+	board.column_j++
+	board.placements++
+}
+
+func (board *ChessBoard) place_next_queen() {
+	for row_i := 0; row_i < cap(board.columns); row_i++ {
+		if board.square_is_free(row_i) {
+			board.set_queen(row_i)
+			if board.column_j == cap(board.columns) {
+				// Check if chess board is full
 				board.solutions++
 			} else {
 				// Recursive call to find next queen placement on the chess board
-				place_next_queen(board)
+				board.place_next_queen()
 			}
 			// Removes a queen from the chess board in the given column to backtrack
 			board.column_j--
 			board.diagonal_down[board.column_j+row_i] = true
-			board.diagonal_up[len(board.columns)-1+board.column_j-row_i] = true
+			board.diagonal_up[cap(board.columns)-1+board.column_j-row_i] = true
 			board.columns[row_i] = true
 		}
 	}
@@ -68,7 +77,7 @@ func main() {
 		}
 	}
 	board := initialize_board(n_size)
-	place_next_queen(board)
+	board.place_next_queen()
 	const template string = "The %d-Queens problem required %d queen placements to find all %d solutions"
 	fmt.Printf(template, n_size, board.placements, board.solutions)
 }
