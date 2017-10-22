@@ -7,12 +7,12 @@ import "strconv"
 // ChessBoard is an abstract representation of an NxN chess board that is used
 // to tracking open positions
 type ChessBoard struct {
-	columns []bool        // Store available column moves/attacks
-	diagonal_up []bool    // Store available diagonal moves/attacks
+	columns       []bool // Store available column moves/attacks
+	diagonal_up   []bool // Store available diagonal moves/attacks
 	diagonal_down []bool
-	column_j int          // Stores column to place the next queen in
-	placements uint64     // Tracks total number queen placements
-	solutions uint64      // Tracks number of solutions
+	column_j      int    // Stores column to place the next queen in
+	placements    uint64 // Tracks total number queen placements
+	solutions     uint64 // Tracks number of solutions
 }
 
 // InitializeBoard creates an n_size by n_size ChessBoard struct pointer and
@@ -20,12 +20,12 @@ type ChessBoard struct {
 func InitializeBoard(n_size int) *ChessBoard {
 	diagonal_size := 2*n_size - 1
 	board := &ChessBoard{
-		columns: make([]bool, n_size, n_size),
-		diagonal_up: make([]bool, diagonal_size, diagonal_size),
+		columns:       make([]bool, n_size, n_size),
+		diagonal_up:   make([]bool, diagonal_size, diagonal_size),
 		diagonal_down: make([]bool, diagonal_size, diagonal_size),
-		column_j: 0,
-		placements: 0,
-		solutions: 0,
+		column_j:      0,
+		placements:    0,
+		solutions:     0,
 	}
 	for i := 0; i < n_size; i++ {
 		board.columns[i] = true
