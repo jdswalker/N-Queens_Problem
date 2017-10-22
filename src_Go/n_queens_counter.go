@@ -4,6 +4,8 @@ import "fmt"
 import "os"
 import "strconv"
 
+// ChessBoard is an abstract representation of an NxN chess board that is used
+// to tracking open positions
 type ChessBoard struct {
 	columns []bool        // Store available column moves/attacks
 	diagonal_up []bool    // Store available diagonal moves/attacks
@@ -13,7 +15,9 @@ type ChessBoard struct {
 	solutions uint64      // Tracks number of solutions
 }
 
-func initialize_board(n_size int) *ChessBoard {
+// InitializeBoard creates an n_size by n_size ChessBoard struct pointer and
+// sets initial values for the struct
+func InitializeBoard(n_size int) *ChessBoard {
 	diagonal_size := 2*n_size - 1
 	board := &ChessBoard{
 		columns: make([]bool, n_size, n_size),
@@ -34,13 +38,15 @@ func initialize_board(n_size int) *ChessBoard {
 	return board
 }
 
-func (board *ChessBoard) square_is_free(row_i int) bool {
+// Checks if a queen can be placed in at row 'i' of the current column
+func (board *ChessBoard) SquareIsFree(row_i int) bool {
 	return board.columns[row_i] &&
 		board.diagonal_up[cap(board.columns)-1+board.column_j-row_i] &&
 		board.diagonal_down[board.column_j+row_i]
 }
 
-func (board *ChessBoard) set_queen(row_i int) {
+// Places a queen on the chess board at row 'i' of the current column
+func (board *ChessBoard) SetQueen(row_i int) {
 	board.columns[row_i] = false
 	board.diagonal_up[cap(board.columns)-1+board.column_j-row_i] = false
 	board.diagonal_down[board.column_j+row_i] = false
@@ -48,26 +54,39 @@ func (board *ChessBoard) set_queen(row_i int) {
 	board.placements++
 }
 
-func (board *ChessBoard) place_next_queen() {
+// Removes a queen from the NxN chess board in the given column to backtrack
+func (board *ChessBoard) RemoveQueen(row_i int) {
+	board.column_j--
+	board.diagonal_down[board.column_j+row_i] = true
+	board.diagonal_up[cap(board.columns)-1+board.column_j-row_i] = true
+	board.columns[row_i] = true
+}
+
+// Recursive function for finding valid queen placements on the chess board
+func (board *ChessBoard) PlaceNextQueen() {
 	for row_i := 0; row_i < cap(board.columns); row_i++ {
-		if board.square_is_free(row_i) {
-			board.set_queen(row_i)
+		if board.SquareIsFree(row_i) {
+			board.SetQueen(row_i)
 			if board.column_j == cap(board.columns) {
-				// Check if chess board is full
 				board.solutions++
 			} else {
-				// Recursive call to find next queen placement on the chess board
-				board.place_next_queen()
+				board.PlaceNextQueen()
 			}
-			// Removes a queen from the chess board in the given column to backtrack
-			board.column_j--
-			board.diagonal_down[board.column_j+row_i] = true
-			board.diagonal_up[cap(board.columns)-1+board.column_j-row_i] = true
-			board.columns[row_i] = true
+			board.RemoveQueen(row_i)
 		}
 	}
 }
 
+// Prints the number of queen placements and solutions for the NxN chess board
+func (board *ChessBoard) OutputResult() {
+	const template string = "The %d-Queens problem " +
+		"required %d queen placements " +
+		"to find all %d solutions"
+	fmt.Printf(template, cap(board.columns), board.placements, board.solutions)
+}
+
+// Parses command-line input, if any, and calculates solutions and placements
+// for an N-Queens problem. The result is printed to stdout.
 func main() {
 	var n_size int = 4
 	if len(os.Args) != 1 {
@@ -76,8 +95,7 @@ func main() {
 			n_size = user_input
 		}
 	}
-	board := initialize_board(n_size)
-	board.place_next_queen()
-	const template string = "The %d-Queens problem required %d queen placements to find all %d solutions"
-	fmt.Printf(template, n_size, board.placements, board.solutions)
+	board := InitializeBoard(n_size)
+	board.PlaceNextQueen()
+	board.OutputResult()
 }
