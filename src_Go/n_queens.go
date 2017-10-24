@@ -4,7 +4,7 @@ package main
 import "flag"
 import "fmt"
 
-// 
+//
 type chessboard interface {
 	squareIsFree(rowI int) bool
 	setQueen(rowI int)
@@ -28,6 +28,6 @@ func main() {
 	} else {
 		board := InitializeCounter(nSize)
 		board.PlaceNextQueen()
-		board.OutputResult()		
+		board.OutputResult()
 	}
 }
