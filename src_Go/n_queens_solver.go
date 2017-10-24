@@ -1,71 +1,69 @@
 package main
 
 import "fmt"
-import "os"
-import "strconv"
 
-// ChessBoard is an abstract representation of an NxN chess board that is used
+// solverBoard is an abstract representation of an NxN chess board that is used
 // to tracking open positions
-type ChessBoard struct {
-	queens        []int  // Store queen positions on the board
-	columns       []bool // Store available column moves/attacks
-	diagonal_up   []bool // Store available diagonal moves/attacks
-	diagonal_down []bool
-	column_j      int // Stores column to place the next queen in
+type solverBoard struct {
+	queens       []int  // Store queen positions on the board
+	columns      []bool // Store available column moves/attacks
+	diagonalUp   []bool // Store available diagonal moves/attacks
+	diagonalDown []bool
+	columnJ      int // Stores column to place the next queen in
 }
 
-// InitializeBoard creates an n_size by n_size ChessBoard struct pointer and
+// InitializeBoard creates an nSize by nSize solverBoard struct pointer and
 // sets initial values for the struct
-func InitializeBoard(n_size int) *ChessBoard {
-	diagonal_size := 2*n_size - 1
-	board := &ChessBoard{
-		queens:        make([]int, n_size, n_size),
-		columns:       make([]bool, n_size, n_size),
-		diagonal_up:   make([]bool, diagonal_size, diagonal_size),
-		diagonal_down: make([]bool, diagonal_size, diagonal_size),
-		column_j:      0,
+func InitializeSolver(nSize int) *solverBoard {
+	diagonalLength := 2*nSize - 1
+	board := &solverBoard{
+		queens:       make([]int, nSize, nSize),
+		columns:      make([]bool, nSize, nSize),
+		diagonalUp:   make([]bool, diagonalLength, diagonalLength),
+		diagonalDown: make([]bool, diagonalLength, diagonalLength),
+		columnJ:      0,
 	}
-	for i := 0; i < n_size; i++ {
+	for i := 0; i < nSize; i++ {
 		board.columns[i] = true
 	}
-	for i := 0; i < (2*n_size - 1); i++ {
-		board.diagonal_up[i] = true
+	for i := 0; i < (2*nSize - 1); i++ {
+		board.diagonalUp[i] = true
 	}
-	copy(board.diagonal_down, board.diagonal_up)
+	copy(board.diagonalDown, board.diagonalUp)
 
 	return board
 }
 
 // Checks if a queen can be placed in at row 'i' of the current column
-func (board *ChessBoard) SquareIsFree(row_i int) bool {
-	return board.columns[row_i] &&
-		board.diagonal_up[cap(board.columns)-1+board.column_j-row_i] &&
-		board.diagonal_down[board.column_j+row_i]
+func (board *solverBoard) squareIsFree(rowI int) bool {
+	return board.columns[rowI] &&
+		board.diagonalUp[cap(board.columns)-1+board.columnJ-rowI] &&
+		board.diagonalDown[board.columnJ+rowI]
 }
 
 // Places a queen on the chess board at row 'i' of the current column
-func (board *ChessBoard) SetQueen(row_i int) {
-	board.queens[board.column_j] = row_i + 1
-	board.columns[row_i] = false
-	board.diagonal_up[cap(board.columns)-1+board.column_j-row_i] = false
-	board.diagonal_down[board.column_j+row_i] = false
-	board.column_j++
+func (board *solverBoard) setQueen(rowI int) {
+	board.queens[board.columnJ] = rowI + 1
+	board.columns[rowI] = false
+	board.diagonalUp[cap(board.columns)-1+board.columnJ-rowI] = false
+	board.diagonalDown[board.columnJ+rowI] = false
+	board.columnJ++
 }
 
 // Removes a queen from the NxN chess board in the given column to backtrack
-func (board *ChessBoard) RemoveQueen(row_i int) {
-	board.column_j--
-	board.diagonal_down[board.column_j+row_i] = true
-	board.diagonal_up[cap(board.columns)-1+board.column_j-row_i] = true
-	board.columns[row_i] = true
+func (board *solverBoard) removeQueen(rowI int) {
+	board.columnJ--
+	board.diagonalDown[board.columnJ+rowI] = true
+	board.diagonalUp[cap(board.columns)-1+board.columnJ-rowI] = true
+	board.columns[rowI] = true
 }
 
 // Recursive function for finding valid queen placements on the chess board
-func (board *ChessBoard) PlaceNextQueen() {
-	for row_i := 0; row_i < cap(board.columns); row_i++ {
-		if board.SquareIsFree(row_i) {
-			board.SetQueen(row_i)
-			if board.column_j == cap(board.columns) {
+func (board *solverBoard) PlaceNextQueen() {
+	for rowI := 0; rowI < cap(board.columns); rowI++ {
+		if board.squareIsFree(rowI) {
+			board.setQueen(rowI)
+			if board.columnJ == cap(board.columns) {
 				// Chess board is full
 				for row := 0; row < cap(board.columns); row++ {
 					fmt.Printf("%d ", board.queens[row])
@@ -74,21 +72,21 @@ func (board *ChessBoard) PlaceNextQueen() {
 			} else {
 				board.PlaceNextQueen()
 			}
-			board.RemoveQueen(row_i)
+			board.removeQueen(rowI)
 		}
 	}
 }
 
 // Parses command-line input, if any, and outputs solutions for an N-Queens
 // problem to stdout.
-func main() {
-	var n_size int = 4
-	if len(os.Args) != 1 {
-		user_input, err := strconv.Atoi(os.Args[1])
-		if err == nil {
-			n_size = user_input
-		}
-	}
-	board := InitializeBoard(n_size)
-	board.PlaceNextQueen()
-}
+// func main() {
+// var nSize int = 4
+// if len(os.Args) != 1 {
+// user_input, err := strconv.Atoi(os.Args[1])
+// if err == nil {
+// nSize = user_input
+// }
+// }
+// board := InitializeSolver(nSize)
+// board.PlaceNextQueen()
+// }
