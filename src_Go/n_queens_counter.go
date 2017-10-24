@@ -5,12 +5,12 @@ import "fmt"
 // counterBoard is an abstract representation of an NxN chess board that is used
 // to tracking open positions
 type counterBoard struct {
-	columns       []bool // Store available column moves/attacks
+	columns      []bool // Store available column moves/attacks
 	diagonalUp   []bool // Store available diagonal moves/attacks
 	diagonalDown []bool
 	columnJ      int    // Stores column to place the next queen in
-	placements    uint64 // Tracks total number queen placements
-	solutions     uint64 // Tracks number of solutions
+	placements   uint64 // Tracks total number queen placements
+	solutions    uint64 // Tracks number of solutions
 }
 
 // InitializeCounter creates an nSize by nSize counterBoard struct pointer and
@@ -18,12 +18,12 @@ type counterBoard struct {
 func InitializeCounter(nSize int) *counterBoard {
 	diagonalLength := 2*nSize - 1
 	board := &counterBoard{
-		columns:       make([]bool, nSize, nSize),
+		columns:      make([]bool, nSize, nSize),
 		diagonalUp:   make([]bool, diagonalLength, diagonalLength),
 		diagonalDown: make([]bool, diagonalLength, diagonalLength),
 		columnJ:      0,
-		placements:    0,
-		solutions:     0,
+		placements:   0,
+		solutions:    0,
 	}
 	for i := 0; i < nSize; i++ {
 		board.columns[i] = true
