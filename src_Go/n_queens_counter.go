@@ -1,8 +1,9 @@
 package main
 
+import "flag"
 import "fmt"
-import "os"
-import "strconv"
+// import "os"
+// import "strconv"
 
 // ChessBoard is an abstract representation of an NxN chess board that is used
 // to tracking open positions
@@ -88,14 +89,15 @@ func (board *ChessBoard) OutputResult() {
 // Parses command-line input, if any, and calculates solutions and placements
 // for an N-Queens problem. The result is printed to stdout.
 func main() {
-	var n_size int = 4
-	if len(os.Args) != 1 {
-		user_input, err := strconv.Atoi(os.Args[1])
-		if err == nil {
-			n_size = user_input
-		}
+	var n_size int
+	const n_size_label string = "The N-Queens problem to count solutions"
+	flag.IntVar(&n_size, "N", 4, n_size_label)
+	flag.Parse()
+	if n_size > 0 {
+		board := InitializeBoard(n_size)
+		board.PlaceNextQueen()
+		board.OutputResult()
+	} else {
+		fmt.Printf("Error: N must be a positive value for N-Queens problems")
 	}
-	board := InitializeBoard(n_size)
-	board.PlaceNextQueen()
-	board.OutputResult()
 }
